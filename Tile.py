@@ -6,7 +6,7 @@ class Tile:
         self.cel_y = y
 
     def isObstacle(self):
-        return False
+        return (-1, -1)
 
 class GroundTile(Tile):
     def paint(self, maze):
@@ -17,4 +17,4 @@ class ObstacleTile(Tile):
         maze.paintObstacleTile(self.cel_x, self.cel_y)
     
     def isObstacle(self):
-        return True
+        return ((self.cel_x, self.cel_y))
