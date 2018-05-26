@@ -62,7 +62,7 @@ class Maze:
     def canMoveDown(self, new_pos):
         x, y = new_pos
         cell = self.objects[x/50][y/40].isObstacle()
-        return self.getRealGround(cell[0], cell[1])[1]
+        return = self.getRealGround(cell[0], cell[1])[1]
 
     def canMoveLeft(self, new_pos):
         x, y = new_pos

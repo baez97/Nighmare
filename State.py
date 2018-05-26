@@ -22,6 +22,9 @@ class MovingDown:
     def getNextPos(self):
         return (self.character.pos[0], self.character.pos[1] + self.velocity)
 
+    def getNextLimit(self):
+        return (self.character.pos[0], self.character.pos[1] + self.velocity + 34)
+
 class Stopped:
     def __init__(self, character):
         self.image = 'stopped'

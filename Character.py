@@ -5,7 +5,7 @@ from State import *
 class Character:
     def __init__(self, game):
         self.game = game
-        self.pos = (30, 30)
+        self.pos = (500, 500)
         self.state = Stopped(self)
         self.dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
                            'left':pygame.image.load('images/vegeta/left.png'), 'right':pygame.image.load('images/vegeta/right.png'),
@@ -34,12 +34,30 @@ class Character:
 
     def moveDown(self):
         new_pos = self.state.getNextPos()
-        self.rect.move((self.pos[0], new_pos[1] - self.pos[1]))
-        self.pos = new_pos
-        
+        new_limit = self.state.getNextLimit()
+        bottom_limit = self.game.canMoveDown(new_limit)
 
+        if bottom_limit < 0:
+            self.rect.move((0, new_pos[1] - self.pos[1]))
+            self.pos = new_pos
+        
+        else:
+            self.changeStopped()
+            print 'So I change the bottom of the rectangle to', bottom_limit
+            self.rect.bottom = bottom_limit
+            self.pos = (self.pos[0], self.rect.top)
+            
+        
     def changeDown(self):
         self.state = MovingDown(self)
         self.currentImage = self.dic_images['down']
+        self.rect = self.currentImage.get_rect()
+        self.rect.move(self.pos)
+
+    def changeStopped(self):
+        self.state = Stopped(self)
+        self.currentImage = self.dic_images['stopped']
+        self.rect = self.currentImage.get_rect()
+        self.rect.move(self.pos)
 
         
