@@ -54,7 +54,7 @@ class Character:
     def moveLeft(self):
         new_pos = self.state.getNextPos()
         new_limit = self.state.getNextLimit()
-        left_limit = self.game.canMoveLeft((new_limit[0], new_limit[1]+30))
+        left_limit = self.game.canMoveLeft((new_limit[0], new_limit[1]))
 
         if left_limit < 0:
             self.rect.move((new_pos[0] - self.pos[0], 0))
@@ -68,7 +68,7 @@ class Character:
     def moveRight(self):
         new_pos = self.state.getNextPos()
         new_limit = self.state.getNextLimit()
-        right_limit = self.game.canMoveRight((new_limit[0], new_limit[1]+30))
+        right_limit = self.game.canMoveRight((new_limit[0], new_limit[1]))
 
         if right_limit < 0:
             self.rect.move((self.pos[0] - new_pos[0], 0))
@@ -76,7 +76,7 @@ class Character:
         
         else:
             self.changeStopped()
-            self.rect.right = right_limit - 30
+            self.rect.right = right_limit - 24
             self.pos = (self.rect.right, self.pos[1])
             
         
@@ -109,5 +109,8 @@ class Character:
         self.currentImage = self.dic_images['stopped']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
+
+    def getPos(self):
+        return self.pos
 
         

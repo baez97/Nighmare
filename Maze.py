@@ -9,7 +9,7 @@ class Maze:
         self.objects = []
         for i in range(0,20):
             for j in range(0,20):
-                if j in (0, 19) or i in (0,19):
+                if j in (0, 19) or i in (0,19) or (j%5 == 0 and i%2 != 0):
                     line.append(ObstacleTile(i,j))
                 else:
                     line.append(GroundTile(i,j))
@@ -30,6 +30,7 @@ class Maze:
     def paintAll(self):
         self.paintTiles()
         self.paintCharacter()
+        self.paintFront()
     
     def paintGroundTile(self, x, y):
         real_pos = self.getRealGround(x,y)
@@ -38,7 +39,18 @@ class Maze:
     def paintObstacleTile(self, x, y):
         real_pos = self.getRealObstacle(x, y)
         self.game.paint(self.obstacle_img, real_pos)
-    
+
+    def paintFront(self):
+        self.game.paintFront()
+
+    def rePaint(self, pos):
+        obj = self.objects[pos[0]/50][(pos[1]/40) + 2]
+        obj_r = self.objects[(pos[0]+23)/50][(pos[1]/40) + 2]
+        if obj.isObstacle()[1] > 0:
+            obj.paint(self)
+        if obj_r.isObstacle()[1] > 0:
+            obj_r.paint(self)
+
     def getRealGround(self, x, y):
         real_x = x*50
         real_y = y*40 + 20
@@ -50,27 +62,62 @@ class Maze:
         return (real_x, real_y)
 
     def canMoveUp(self, new_pos):
-        print 'Hey there!!!'
         x, y = new_pos
-        print 'New pos should be', new_pos
-        cell = self.objects[x/50][y/40].isObstacle()
-        print 'And the limit is supposed to be', cell
-        return self.getRealGround(cell[0], cell[1])[1]
+        
+        cell_a = self.objects[x/50][y/40].isObstacle()
+        if cell_a[0] > 0:
+            return self.getRealGround(cell_a[0], cell_a[1])[1]
+
+        cell_b = self.objects[(x + 24)/50][y/40].isObstacle()
+        if cell_b[0] > 0:
+            return self.getRealGround(cell_b[0], cell_b[1])[1]
+
+        return -1
 
     def canMoveRight(self, new_pos):
         x, y = new_pos
-        cell = self.objects[x/50][y/40].isObstacle()
-        return self.getRealGround(cell[0], cell[1])[0]
+        
+        cell_a = self.objects[x/50][(y+30)/40].isObstacle()
+        if cell_a[0] > 0:
+            print 'celda conflictiva es', (x/50, y/40)
+            return self.getRealGround(cell_a[0], cell_a[1])[0]
+
+        cell_b = self.objects[x/50][(y+50)/40].isObstacle()
+        
+        if cell_b[0] > 0:
+            print 'celda conflictiva es', (x/50, (y+74)/40)
+            return self.getRealGround(cell_b[0], cell_b[1])[0]
+
+        return -1
 
     def canMoveDown(self, new_pos):
         x, y = new_pos
-        cell = self.objects[x/50][y/40].isObstacle()
-        return self.getRealGround(cell[0], cell[1])[1]
+
+        cell_a = self.objects[x/50][y/40].isObstacle()
+        if cell_a[0] > 0:
+            return self.getRealGround(cell_a[0], cell_a[1])[1]
+
+        cell_b = self.objects[(x+24)/50][y/40].isObstacle()
+        if cell_b[0] > 0:
+            return self.getRealGround(cell_b[0], cell_b[1])[1]
+
+        return -1
 
     def canMoveLeft(self, new_pos):
         x, y = new_pos
-        cell = self.objects[x/50][y/40].isObstacle()
-        return self.getRealGround(cell[0], cell[1])[0]
+        
+        cell_a = self.objects[x/50][(y+30)/40].isObstacle()
+        if cell_a[0] > 0:
+            print 'celda conflictiva es', (x/50, y/40)
+            return self.getRealGround(cell_a[0], cell_a[1])[0]
+
+        cell_b = self.objects[x/50][(y+50)/40].isObstacle()
+        
+        if cell_b[0] > 0:
+            print 'celda conflictiva es', (x/50, (y+74)/40)
+            return self.getRealGround(cell_b[0], cell_b[1])[0]
+
+        return -1
         
     
 

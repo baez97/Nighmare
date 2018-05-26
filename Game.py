@@ -17,6 +17,7 @@ class Game:
         while True:
             self.maze.paintAll()
             self.character.move()
+            print self.character.pos
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -64,6 +65,9 @@ class Game:
 
     def paintCharacter(self):
         self.character.paint()
+
+    def paintFront(self):
+        self.maze.rePaint(self.character.getPos())
 
 
 game = Game()
