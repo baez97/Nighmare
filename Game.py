@@ -26,6 +26,23 @@ class Game:
                 elif event.type == KEYDOWN:
                     if event.key == K_DOWN:
                         self.character.changeDown()
+                    if event.key == K_LEFT:
+                        self.character.changeLeft()
+                    if event.key == K_RIGHT:
+                        self.character.changeRight()
+                    if event.key == K_UP:
+                        self.character.changeUp()
+
+                elif event.type == KEYUP:
+                    if self.character.state.isUp() and event.key ==K_UP:
+                        self.character.changeStopped()
+                    elif self.character.state.isDown() and event.key ==K_DOWN:
+                        self.character.changeStopped()
+                    elif self.character.state.isRight() and event.key ==K_RIGHT:
+                        self.character.changeStopped()
+                    elif self.character.state.isLeft() and event.key ==K_LEFT:
+                        self.character.changeStopped()
+
 
             pygame.display.update()
             self.fpsClock.tick(30)
