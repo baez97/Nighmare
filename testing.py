@@ -1,3 +1,1 @@
-from Maze import *
-from Game import *
-maze = Maze(Game())
+print (30, 30) + (20, 20)
