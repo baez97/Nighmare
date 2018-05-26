@@ -1,12 +1,14 @@
 import pygame
 from pygame.locals import *
 from State import *
+from StateFlyweight import *
 
 class Character:
     def __init__(self, game):
         self.game = game
+        self.stateFly = StateFlyweight(self)
         self.pos = (500, 500)
-        self.state = Stopped(self)
+        self.state = self.stateFly.getStopped()
         self.dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
                            'left':pygame.image.load('images/vegeta/left.png'), 'right':pygame.image.load('images/vegeta/right.png'),
                            'up':pygame.image.load('images/vegeta/up.png'), 'down':pygame.image.load('images/vegeta/down.png')}
@@ -76,36 +78,36 @@ class Character:
         
         else:
             self.changeStopped()
-            self.rect.right = right_limit - 24
+            self.rect.right = right_limit - 26
             self.pos = (self.rect.right, self.pos[1])
             
         
     def changeDown(self):
-        self.state = MovingDown(self)
+        self.state = self.stateFly.getMovingDown()
         self.currentImage = self.dic_images['down']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
     def changeUp(self):
-        self.state = MovingUp(self)
+        self.state = self.stateFly.getMovingUp()
         self.currentImage = self.dic_images['up']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
     def changeRight(self):
-        self.state = MovingRight(self)
+        self.state = self.stateFly.getMovingRight()
         self.currentImage = self.dic_images['right']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
     def changeLeft(self):
-        self.state = MovingLeft(self)
+        self.state = self.stateFly.getMovingLeft()
         self.currentImage = self.dic_images['left']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
     def changeStopped(self):
-        self.state = Stopped(self)
+        self.state = self.stateFly.getStopped()
         self.currentImage = self.dic_images['stopped']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)

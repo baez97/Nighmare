@@ -44,8 +44,8 @@ class Maze:
         self.game.paintFront()
 
     def rePaint(self, pos):
-        obj = self.objects[pos[0]/50][(pos[1]/40) + 2]
-        obj_r = self.objects[(pos[0]+23)/50][(pos[1]/40) + 2]
+        obj = self.objects[pos[0]/50][((pos[1]+30)/40) + 1]
+        obj_r = self.objects[(pos[0]+23)/50][((pos[1]+30)/40) + 1]
         if obj.isObstacle()[1] > 0:
             obj.paint(self)
         if obj_r.isObstacle()[1] > 0:
@@ -79,13 +79,11 @@ class Maze:
         
         cell_a = self.objects[x/50][(y+30)/40].isObstacle()
         if cell_a[0] > 0:
-            print 'celda conflictiva es', (x/50, y/40)
             return self.getRealGround(cell_a[0], cell_a[1])[0]
 
         cell_b = self.objects[x/50][(y+50)/40].isObstacle()
         
         if cell_b[0] > 0:
-            print 'celda conflictiva es', (x/50, (y+74)/40)
             return self.getRealGround(cell_b[0], cell_b[1])[0]
 
         return -1
@@ -107,13 +105,13 @@ class Maze:
         x, y = new_pos
         
         cell_a = self.objects[x/50][(y+30)/40].isObstacle()
-        if cell_a[0] > 0:
+        if cell_a[0] >= 0:
             print 'celda conflictiva es', (x/50, y/40)
             return self.getRealGround(cell_a[0], cell_a[1])[0]
 
         cell_b = self.objects[x/50][(y+50)/40].isObstacle()
         
-        if cell_b[0] > 0:
+        if cell_b[0] >= 0:
             print 'celda conflictiva es', (x/50, (y+74)/40)
             return self.getRealGround(cell_b[0], cell_b[1])[0]
 
