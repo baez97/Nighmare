@@ -1,12 +1,14 @@
 from State import *
 
 class StateFlyweight:
-    def __init__(self, guy):
-        self.movingUp = MovingUp(guy)
-        self.movingDown = MovingDown(guy)
-        self.movingLeft = MovingLeft(guy)
-        self.movingRight = MovingRight(guy)
-        self.stopped = Stopped(guy)
+    def __init__(self, guy, factory):
+        self.movingUp = factory.makeMovingUp(guy)
+        self.movingDown = factory.makeMovingDown(guy)
+        self.movingLeft = factory.makeMovingLeft(guy)
+        self.movingRight = factory.makeMovingRight(guy)
+        self.stopped = factory.makeStopped(guy)
+        self.attackingRight = factory.makeAttackingRight(guy)
+        self.attackingLeft = factory.makeAttackingLeft(guy)
 
     def getMovingUp(self):
         return self.movingUp
@@ -22,5 +24,11 @@ class StateFlyweight:
 
     def getStopped(self):
         return self.stopped
+
+    def getAttackingRight(self):
+        return self.attackingRight
+    
+    def getAttackingLeft(self):
+        return self.attackingLeft
 
     

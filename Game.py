@@ -3,12 +3,12 @@ import sys, pygame
 from pygame.locals import *
 from Maze import *
 from Tile import *
-
+from FactoryMethod import *
 
 class Game:
-    def __init__(self):
-        self.maze = Maze(self)
-        self.character = Character(self)
+    def __init__(self, factory):
+        self.maze = factory.makeMaze(self)
+        self.character = factory.makeCharacter(self)
         self.display = pygame.display.set_mode((1000, 820))
         self.fpsClock = pygame.time.Clock()
 
@@ -17,7 +17,6 @@ class Game:
         while True:
             self.maze.paintAll()
             self.character.move()
-            print self.character.pos
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -33,6 +32,10 @@ class Game:
                         self.character.changeRight()
                     if event.key == K_UP:
                         self.character.changeUp()
+                    if event.key == K_d:
+                        self.character.changeAttackRight()
+                    if event.key == K_a:
+                        self.character.changeAttackLeft()
 
                 elif event.type == KEYUP:
                     if self.character.state.isUp() and event.key ==K_UP:
@@ -70,5 +73,6 @@ class Game:
         self.maze.rePaint(self.character.getPos())
 
 
-game = Game()
+fm = FactoryMethod()
+game = Game(fm)
 game.run()

@@ -4,20 +4,17 @@ from State import *
 from StateFlyweight import *
 
 class Character:
-    def __init__(self, game):
+    def __init__(self, game, dic, dic_images_ss, factory):
         self.game = game
-        self.stateFly = StateFlyweight(self)
+        self.stateFly = factory.makeStateFlyweight(self)
         self.pos = (500, 500)
         self.state = self.stateFly.getStopped()
-        self.dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
-                           'left':pygame.image.load('images/vegeta/left.png'), 'right':pygame.image.load('images/vegeta/right.png'),
-                           'up':pygame.image.load('images/vegeta/up.png'), 'down':pygame.image.load('images/vegeta/down.png')}
-        self.dic_images_ss = {'stopped':pygame.image.load('images/vegetaSS/stopped.gif'),
-                           'left':pygame.image.load('images/vegetaSS/left.png'), 'right':pygame.image.load('images/vegetaSS/right.png'),
-                           'up':pygame.image.load('images/vegetaSS/up.png'), 'down':pygame.image.load('images/vegetaSS/down.png')}
-
+        self.dic_images = dic
+        self.dic_images_ss = dic_images_ss
         self.currentImage = self.dic_images['stopped']
         self.rect = self.currentImage.get_rect()
+        self.right_images = (self.dic_images['a_right_1'], self.dic_images['a_right_2'], self.dic_images['a_right_3'])
+        self.left_images  = (self.dic_images['a_left_1'],  self.dic_images['a_left_2'],  self.dic_images['a_left_3'] )
 
     def move(self):
         self.state.move()
@@ -81,7 +78,30 @@ class Character:
             self.rect.right = right_limit - 26
             self.pos = (self.rect.right, self.pos[1])
             
+    def attackRight(self):
+        if self.counter < 3:
+            self.currentImage = self.right_images[self.counter]
+            self.counter+=1
+        elif self.counter < 7:
+            self.currentImage = self.right_images[2]
+            self.counter+=1
+        else:
+            self.changeStopped()
         
+    def attackLeft(self):
+        if self.counter == 0:
+            self.pos = (self.pos[0] - 15, self.pos[1])
+        if self.counter < 3:
+            self.currentImage = self.left_images[self.counter]
+            self.counter+=1
+        elif self.counter < 7:
+            self.currentImage = self.left_images[2]
+            self.counter +=1
+        else:
+            self.pos = (self.pos[0] + 15, self.pos[1])
+            self.original_pos = self.pos
+            self.changeStopped()
+
     def changeDown(self):
         self.state = self.stateFly.getMovingDown()
         self.currentImage = self.dic_images['down']
@@ -109,6 +129,25 @@ class Character:
     def changeStopped(self):
         self.state = self.stateFly.getStopped()
         self.currentImage = self.dic_images['stopped']
+        self.rect = self.currentImage.get_rect()
+        self.rect.move(self.pos)
+
+    def changeAttackRight(self):
+        if(self.state.isAttackingLeft()):
+            self.pos = (self.pos[0] + 15, self.pos[1])
+        self.counter = 0
+        self.state = self.stateFly.getAttackingRight()
+        self.currentImage = self.dic_images['a_right_1']
+        self.rect = self.currentImage.get_rect()
+        self.rect.move(self.pos)
+
+    def changeAttackLeft(self):
+        if(self.state.isAttackingLeft()):
+            self.pos = (self.pos[0] + 15, self.pos[1])
+
+        self.counter = 0
+        self.state = self.stateFly.getAttackingLeft()
+        #self.currentImage = self.dic_images['a_left_1']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 

@@ -3,16 +3,16 @@ from pygame.locals import *
 from Tile import *
 
 class Maze:
-    def __init__(self, game):
+    def __init__(self, game, factory):
         self.game = game
         line = []
         self.objects = []
         for i in range(0,20):
             for j in range(0,20):
                 if j in (0, 19) or i in (0,19) or (j%5 == 0 and i%2 != 0):
-                    line.append(ObstacleTile(i,j))
+                    line.append(factory.makeObstacleTile(i,j))
                 else:
-                    line.append(GroundTile(i,j))
+                    line.append(factory.makeGroundTile(i,j))
             self.objects.append(line)
             line = []
 
@@ -106,13 +106,11 @@ class Maze:
         
         cell_a = self.objects[x/50][(y+30)/40].isObstacle()
         if cell_a[0] >= 0:
-            print 'celda conflictiva es', (x/50, y/40)
             return self.getRealGround(cell_a[0], cell_a[1])[0]
 
         cell_b = self.objects[x/50][(y+50)/40].isObstacle()
         
         if cell_b[0] >= 0:
-            print 'celda conflictiva es', (x/50, (y+74)/40)
             return self.getRealGround(cell_b[0], cell_b[1])[0]
 
         return -1
