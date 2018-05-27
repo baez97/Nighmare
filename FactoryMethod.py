@@ -27,6 +27,9 @@ class FactoryMethod:
     def makeStateFlyweight(self, guy):
         return StateFlyweight(guy, self)
 
+    def makeSuperStateFlyweight(self, guy, dic):
+        return SuperStateFlyweight(guy, dic, self)
+
     def makeMovingUp(self, guy):
         return MovingUp(guy)
 
@@ -47,6 +50,12 @@ class FactoryMethod:
 
     def makeAttackingLeft(self, guy):
         return AttackingLeft(guy)
+
+    def makeSuperSaiyan(self, guy, dic):
+        return SuperSaiyan(guy, dic, self)
+
+    def makeNormal(self, guy, dic):
+        return Normal(guy, dic, self)
 
     def makeMaze(self, game):
         return Maze(game, self)

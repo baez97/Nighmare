@@ -36,6 +36,10 @@ class Game:
                         self.character.changeAttackRight()
                     if event.key == K_a:
                         self.character.changeAttackLeft()
+                    if event.key == K_e:
+                        self.character.changeSuperSaiyan()
+                    if event.key == K_q:
+                        self.character.changeNormal()
 
                 elif event.type == KEYUP:
                     if self.character.state.isUp() and event.key ==K_UP:

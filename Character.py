@@ -6,21 +6,23 @@ from StateFlyweight import *
 class Character:
     def __init__(self, game, dic, dic_images_ss, factory):
         self.game = game
-        self.stateFly = factory.makeStateFlyweight(self)
+        self.dics = { 'normal':dic, 'supersaiyan':dic_images_ss}
+        self.superStateFly = factory.makeSuperStateFlyweight(self, self.dics)
         self.pos = (500, 500)
-        self.state = self.stateFly.getStopped()
+        self.state = self.superStateFly.getSuperSaiyan()
         self.dic_images = dic
         self.dic_images_ss = dic_images_ss
         self.currentImage  = self.dic_images['stopped']
         self.rect = self.currentImage.get_rect()
         self.right_images = (self.dic_images['a_right_1'], self.dic_images['a_right_2'], self.dic_images['a_right_3'])
         self.left_images  = (self.dic_images['a_left_1'],  self.dic_images['a_left_2'],  self.dic_images['a_left_3'] )
+        self.counter = 0
 
     def move(self):
         self.state.move()
 
     def paint(self):
-        self.game.paint(self.currentImage, self.pos)
+        self.game.paint(self.state.getImg(), self.pos)
 
     def moveUp(self):
         new_pos = self.state.getNextPos()
@@ -102,42 +104,49 @@ class Character:
             self.original_pos = self.pos
             self.changeStopped()
 
+    def attack(self):
+        self.state.attack(self.counter)
+        self.counter += 1
+
     def changeDown(self):
-        self.state = self.stateFly.getMovingDown()
-        self.currentImage = self.dic_images['down']
+        self.state.changeDown()
+        self.rect = self.state.getImg().get_rect()
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
     def changeUp(self):
-        self.state = self.stateFly.getMovingUp()
-        self.currentImage = self.dic_images['up']
+        self.state.changeUp()
+        self.rect = self.state.getImg().get_rect()
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
     def changeRight(self):
-        self.state = self.stateFly.getMovingRight()
-        self.currentImage = self.dic_images['right']
+        self.state.changeRight()
+        self.rect = self.state.getImg().get_rect()
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
     def changeLeft(self):
-        self.state = self.stateFly.getMovingLeft()
-        self.currentImage = self.dic_images['left']
-        self.rect = self.currentImage.get_rect()
+        self.state.changeLeft()
+        self.rect = self.state.getImg().get_rect()
         self.rect.move(self.pos)
 
     def changeStopped(self):
-        self.state = self.stateFly.getStopped()
-        self.currentImage = self.dic_images['stopped']
-        self.rect = self.currentImage.get_rect()
+        self.state.changeStopped()
+        self.rect = self.state.getImg().get_rect()
         self.rect.move(self.pos)
 
+    def changeSuperSaiyan(self):
+        self.state = self.superStateFly.getSuperSaiyan()
+    
+    def changeNormal(self):
+        self.state = self.superStateFly.getNormal()
+        
     def changeAttackRight(self):
         if(self.state.isAttackingLeft()):
             self.pos = (self.pos[0] + 15, self.pos[1])
         self.counter = 0
-        self.state = self.stateFly.getAttackingRight()
-        self.currentImage = self.dic_images['a_right_1']
+        self.state.changeAttackingRight()
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
@@ -146,8 +155,8 @@ class Character:
             self.pos = (self.pos[0] + 15, self.pos[1])
 
         self.counter = 0
-        self.state = self.stateFly.getAttackingLeft()
-        self.rect = self.currentImage.get_rect()
+        self.state.changeAttackingLeft()
+        self.rect = self.state.getImg().get_rect()
         self.rect.move(self.pos)
 
     def getPos(self):
