@@ -7,6 +7,7 @@ class Maze:
         self.game = game
         line = []
         self.objects = []
+        self.balls = []
         for i in range(0,20):
             for j in range(0,20):
                 if j in (0, 19) or i in (0,19) or (j%5 == 0 and i%2 != 0):
@@ -24,6 +25,10 @@ class Maze:
             for object in line:
                 object.paint(self)
 
+    def moveBalls(self):
+        for ball in self.balls:
+            ball.move()
+
     def paintCharacter(self):
         self.game.paintCharacter() 
 
@@ -31,6 +36,7 @@ class Maze:
         self.paintTiles()
         self.paintCharacter()
         self.paintFront()
+        self.paintBalls()
     
     def paintGroundTile(self, x, y):
         real_pos = self.getRealGround(x,y)
@@ -42,6 +48,13 @@ class Maze:
 
     def paintFront(self):
         self.game.paintFront()
+
+    def paintBalls(self):
+        for ball in self.balls:
+            ball.paint()
+
+    def addBall(self, ball):
+        self.balls.append(ball)
 
     def rePaint(self, pos):
         obj = self.objects[pos[0]/50][((pos[1]+30)/40) + 1]

@@ -22,11 +22,11 @@ class MovingUp(State):
     def move(self):
         self.guy.moveUp()
 
-    def getNextPos(self):
-        return (self.guy.pos[0], self.guy.pos[1] - self.velocity)
+    def getNextPos(self, velocity):
+        return (self.guy.pos[0], self.guy.pos[1] - velocity)
 
-    def getNextLimit(self):
-        return (self.guy.pos[0], self.guy.pos[1] - self.velocity)
+    def getNextLimit(self, velocity):
+        return (self.guy.pos[0], self.guy.pos[1] - velocity)
 
     def isUp(self):
         return True
@@ -39,11 +39,11 @@ class MovingDown(State):
     def move(self):
         self.guy.moveDown()
 
-    def getNextPos(self):
-        return (self.guy.pos[0], self.guy.pos[1] + self.velocity)
+    def getNextPos(self, velocity):
+        return (self.guy.pos[0], self.guy.pos[1] + velocity)
 
-    def getNextLimit(self):
-        return (self.guy.pos[0], self.guy.pos[1] + self.velocity + 34)
+    def getNextLimit(self, velocity):
+        return (self.guy.pos[0], self.guy.pos[1] + velocity + 34)
 
     def isDown(self):
         return True
@@ -56,11 +56,11 @@ class MovingLeft(State):
     def move(self):
         self.guy.moveLeft()
 
-    def getNextPos(self):
-        return (self.guy.pos[0] - self.velocity, self.guy.pos[1])
+    def getNextPos(self, velocity):
+        return (self.guy.pos[0] - velocity, self.guy.pos[1])
 
-    def getNextLimit(self):
-        return (self.guy.pos[0] - self.velocity, self.guy.pos[1])
+    def getNextLimit(self, velocity):
+        return (self.guy.pos[0] - velocity, self.guy.pos[1])
 
     def isLeft(self):
         return True
@@ -73,11 +73,11 @@ class MovingRight(State):
     def move(self):
         self.guy.moveRight()
 
-    def getNextPos(self):
-        return (self.guy.pos[0] + self.velocity, self.guy.pos[1])
+    def getNextPos(self, velocity):
+        return (self.guy.pos[0] + velocity, self.guy.pos[1])
 
-    def getNextLimit(self):
-        return (self.guy.pos[0] + self.velocity + 50, self.guy.pos[1])
+    def getNextLimit(self, velocity):
+        return (self.guy.pos[0] + velocity + 50, self.guy.pos[1])
 
     def isRight(self):
         return True
@@ -90,7 +90,7 @@ class Stopped(State):
     def move(self):
         pass
 
-    def getNextPos(self):
+    def getNextPos(self, velocity):
         return self.guy.pos
 
 class AttackingRight(State):
@@ -121,15 +121,18 @@ class AttackingLeft(State):
     
     
 
-class SuperState:
+class SuperState(object):
     def __init__(self, guy, dic, factory):
         self.stateFly = factory.makeStateFlyweight(guy)
+        self.factory = factory
         self.state = self.stateFly.getStopped()
         self.dic = dic
         self.guy = guy
         self.currentImg = self.dic['stopped']
         self.left_images  = (dic['a_left_1'],  dic['a_left_2'],  dic['a_left_3'] )
         self.right_images = (dic['a_right_1'], dic['a_right_2'], dic['a_right_3'])
+        self.velocity = 10
+
     def changeUp(self):
         self.state = self.stateFly.getMovingUp()
         self.currentImg = self.dic['up']
@@ -171,9 +174,9 @@ class SuperState:
         return self.state.isAttackingRight()
 
     def getNextPos(self):
-        return self.state.getNextPos()
+        return self.state.getNextPos(self.velocity)
     def getNextLimit(self):
-        return self.state.getNextLimit()
+        return self.state.getNextLimit(self.velocity)
 
     def move(self):
         self.state.move()
@@ -201,12 +204,31 @@ class SuperState:
             self.changeStopped()
 
 class SuperSaiyan(SuperState):
+    def __init__(self, guy, dic, factory):
+        super(SuperSaiyan, self).__init__(guy, dic, factory)
+        self.velocity = 15
+
     def attackRight(self, counter):
         if counter < 3:
             self.currentImg = self.right_images[counter]
+        elif counter == 3:
+            self.guy.addBall('right', (26,5))
         elif counter < 7:
             self.currentImg = self.right_images[2]
         else:
+            self.changeStopped()
+
+    def attackLeft(self, counter):
+        if counter == 0:
+            self.guy.pos = (self.guy.pos[0] - 15, self.guy.pos[1])
+        if counter < 3:
+            self.currentImg = self.left_images[counter]
+        elif counter == 3:
+            self.guy.addBall('left', (-10,5))
+        elif counter < 7:
+            self.currentImg = self.left_images[2]
+        else:
+            self.guy.pos = (self.guy.pos[0] + 15, self.guy.pos[1])
             self.changeStopped()
 
 class Normal(SuperState):

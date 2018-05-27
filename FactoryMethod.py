@@ -3,6 +3,7 @@ from StateFlyweight import *
 from Tile import *
 from FactoryMethod import *
 from Maze import *
+from Ball import *
 import pygame
 from pygame import *
 
@@ -66,4 +67,8 @@ class FactoryMethod:
     def makeObstacleTile(self, x, y):
         return ObstacleTile(x, y)
 
+    def makeBall(self, game, direction, pos):
+        dir_dic = {'right':(10,0), 'left':(-10,0)}
+        dic = {'right':pygame.image.load('images/ball_right.png'), 'left':pygame.image.load('images/ball_left.png')}
+        return Ball(game, dic, direction, dir_dic, pos)
     

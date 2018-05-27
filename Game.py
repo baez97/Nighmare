@@ -16,6 +16,7 @@ class Game:
         pygame.init()
         while True:
             self.maze.paintAll()
+            self.moveBalls()
             self.character.move()
 
             for event in pygame.event.get():
@@ -75,6 +76,12 @@ class Game:
 
     def paintFront(self):
         self.maze.rePaint(self.character.getPos())
+
+    def addBall(self, ball):
+        self.maze.addBall(ball)
+
+    def moveBalls(self):
+        self.maze.moveBalls()
 
 
 fm = FactoryMethod()
