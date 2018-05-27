@@ -11,7 +11,7 @@ class Character:
         self.state = self.stateFly.getStopped()
         self.dic_images = dic
         self.dic_images_ss = dic_images_ss
-        self.currentImage = self.dic_images['stopped']
+        self.currentImage  = self.dic_images['stopped']
         self.rect = self.currentImage.get_rect()
         self.right_images = (self.dic_images['a_right_1'], self.dic_images['a_right_2'], self.dic_images['a_right_3'])
         self.left_images  = (self.dic_images['a_left_1'],  self.dic_images['a_left_2'],  self.dic_images['a_left_3'] )
@@ -147,7 +147,6 @@ class Character:
 
         self.counter = 0
         self.state = self.stateFly.getAttackingLeft()
-        #self.currentImage = self.dic_images['a_left_1']
         self.rect = self.currentImage.get_rect()
         self.rect.move(self.pos)
 
