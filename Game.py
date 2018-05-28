@@ -11,12 +11,16 @@ class Game:
         self.character = factory.makeCharacter(self)
         self.display = pygame.display.set_mode((1000, 820))
         self.fpsClock = pygame.time.Clock()
+        self.locked = False
 
     def run(self):
         pygame.init()
         while True:
             self.maze.paintAll()
-            self.moveBalls()
+
+            if (not self.locked):
+                self.moveBalls()
+
             self.character.move()
 
             for event in pygame.event.get():
@@ -24,7 +28,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 
-                elif event.type == KEYDOWN:
+                elif event.type == KEYDOWN and not self.locked:
                     if event.key == K_DOWN:
                         self.character.changeDown()
                     if event.key == K_LEFT:
@@ -38,7 +42,7 @@ class Game:
                     if event.key == K_a:
                         self.character.changeAttackLeft()
                     if event.key == K_e:
-                        self.character.changeSuperSaiyan()
+                        self.character.changePoweringUp()
                     if event.key == K_q:
                         self.character.changeNormal()
 
@@ -82,6 +86,12 @@ class Game:
 
     def moveBalls(self):
         self.maze.moveBalls()
+
+    def lock(self):
+        self.locked = True
+
+    def unlock(self):
+        self.locked = False
 
 
 fm = FactoryMethod()

@@ -35,9 +35,13 @@ class SuperStateFlyweight:
     def __init__(self, guy, dic, factory):
         self.superSaiyan = factory.makeSuperSaiyan(guy, dic['supersaiyan'])
         self.normal = factory.makeNormal(guy, dic['normal'])
+        self.poweringUp = factory.makePoweringUp(guy, dic['powerup'])
 
     def getSuperSaiyan(self):
         return self.superSaiyan
 
     def getNormal(self):
         return self.normal
+
+    def getPoweringUp(self):
+        return self.poweringUp

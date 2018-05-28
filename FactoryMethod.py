@@ -23,7 +23,35 @@ class FactoryMethod:
                            'a_right_2':pygame.image.load('images/vegetaSS/a_right_2.png'), 'a_left_2':pygame.image.load('images/vegetaSS/a_left_2.png'),
                            'a_right_3':pygame.image.load('images/vegetaSS/a_right_3.png'), 'a_left_3':pygame.image.load('images/vegetaSS/a_left_3.png')}
 
-        return Character(game, dic_images, dic_images_ss, self)
+        """dic_images_powerup = {'n_1':pygame.image.load('images/vegetaPU/n_1.png' ), 'n_2':pygame.image.load('images/vegetaPU/n_2.png' ),
+                              'n_3':pygame.image.load('images/vegetaPU/n_3.png' ), 'n_4':pygame.image.load('images/vegetaPU/n_4.png' ),
+                              'n_5':pygame.image.load('images/vegetaPU/n_5.png' ), 'n_6':pygame.image.load('images/vegetaPU/n_6.png' ),
+                              'n_7':pygame.image.load('images/vegetaPU/n_7.png' ), 'n_8':pygame.image.load('images/vegetaPU/n_8.png' ),
+                              'n_9':pygame.image.load('images/vegetaPU/n_9.png' ), 'n_10':pygame.image.load('images/vegetaPU/n_10.png'),
+                              's_1':pygame.image.load('images/vegetaPU/s_1.png' ), 's_2':pygame.image.load('images/vegetaPU/s_2.png' ), 
+                              's_3':pygame.image.load('images/vegetaPU/s_3.png' ), 's_4':pygame.image.load('images/vegetaPU/s_4.png' ), 
+                              's_5':pygame.image.load('images/vegetaPU/s_5.png' ), 's_6':pygame.image.load('images/vegetaPU/s_6.png' ), 
+                              's_7':pygame.image.load('images/vegetaPU/s_7.png' ), 's_8':pygame.image.load('images/vegetaPU/s_8.png' ), 
+                              's_9':pygame.image.load('images/vegetaPU/s_9.png' ), 's_10':pygame.image.load('images/vegetaPU/s_10.png'), 
+                              's_11':pygame.image.load('images/vegetaPU/s_11.png'),'s_12':pygame.image.load('images/vegetaPU/s_12.png'), 
+                              's_13':pygame.image.load('images/vegetaPU/s_13.png'),'s_14':pygame.image.load('images/vegetaPU/s_14.png')}"""
+
+        dic_images_powerup = (pygame.image.load('images/vegetaPU/n_1.png' ), pygame.image.load('images/vegetaPU/n_2.png' ),
+                              pygame.image.load('images/vegetaPU/n_3.png' ), pygame.image.load('images/vegetaPU/n_4.png' ),
+                              pygame.image.load('images/vegetaPU/n_5.png' ), pygame.image.load('images/vegetaPU/n_6.png' ),
+                              pygame.image.load('images/vegetaPU/n_7.png' ), pygame.image.load('images/vegetaPU/n_8.png' ),
+                              pygame.image.load('images/vegetaPU/n_9.png' ), pygame.image.load('images/vegetaPU/n_10.png'),
+                              pygame.image.load('images/vegetaPU/s_1.png' ), pygame.image.load('images/vegetaPU/s_2.png' ), 
+                              pygame.image.load('images/vegetaPU/s_3.png' ), pygame.image.load('images/vegetaPU/s_4.png' ), 
+                              pygame.image.load('images/vegetaPU/s_5.png' ), pygame.image.load('images/vegetaPU/s_6.png' ), 
+                              pygame.image.load('images/vegetaPU/s_7.png' ), pygame.image.load('images/vegetaPU/s_8.png' ), 
+                              pygame.image.load('images/vegetaPU/s_9.png' ), pygame.image.load('images/vegetaPU/s_10.png'), 
+                              pygame.image.load('images/vegetaPU/s_11.png'), pygame.image.load('images/vegetaPU/s_12.png'), 
+                              pygame.image.load('images/vegetaPU/s_13.png'), pygame.image.load('images/vegetaPU/s_14.png'))
+        
+
+
+        return Character(game, dic_images, dic_images_ss, dic_images_powerup, self)
         
     def makeStateFlyweight(self, guy):
         return StateFlyweight(guy, self)
@@ -57,6 +85,9 @@ class FactoryMethod:
 
     def makeNormal(self, guy, dic):
         return Normal(guy, dic, self)
+
+    def makePoweringUp(self, guy, dic):
+        return PoweringUp(guy, dic, self)
 
     def makeMaze(self, game):
         return Maze(game, self)

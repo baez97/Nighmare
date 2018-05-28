@@ -19,6 +19,7 @@ class Maze:
 
         self.ground_img   = pygame.image.load('images/GroundTile.png')
         self.obstacle_img = pygame.image.load('images/GrassTile.png')
+        self.black = pygame.image.load('images/Black.png')
 
     def paintTiles(self):
         for line in self.objects:
@@ -28,8 +29,9 @@ class Maze:
     def moveBalls(self):
         for ball in self.balls:
             ball.move()
-
     def paintCharacter(self):
+        if self.game.locked:
+            self.game.paint(self.black, (0,0))
         self.game.paintCharacter() 
 
     def paintAll(self):

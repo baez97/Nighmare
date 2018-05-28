@@ -17,11 +17,11 @@ class MovableObject(object):
         self.game.paint(self.state.getImg(), self.pos)
         
 class Character(MovableObject):
-    def __init__(self, game, dic, dic_images_ss, factory):
+    def __init__(self, game, dic, dic_images_ss, dic_powerUp, factory):
         super(Character, self).__init__(game, dic)
-        self.dics = { 'normal':dic, 'supersaiyan':dic_images_ss}
+        self.dics = {'normal':dic, 'supersaiyan':dic_images_ss, 'powerup': dic_powerUp}
         self.superStateFly = factory.makeSuperStateFlyweight(self, self.dics)
-        self.state = self.superStateFly.getSuperSaiyan()
+        self.state = self.superStateFly.getNormal()
         self.rect = self.state.getImg().get_rect()
         self.factory = factory
 
@@ -85,6 +85,10 @@ class Character(MovableObject):
         self.state.attack(self.counter)
         self.counter += 1
 
+    def powerUp(self):
+        self.state.powerUp(self.counter)
+        self.counter += 1
+
     def changeDown(self):
         self.state.changeDown()
         self.rect = self.state.getImg().get_rect()
@@ -110,12 +114,23 @@ class Character(MovableObject):
         self.rect = self.state.getImg().get_rect()
         self.rect.move(self.pos)
 
+    def changePoweringUp(self):
+        if(self.state.isAttackingLeft()):
+            self.pos = (self.pos[0] + 15, self.pos[1])
+        self.pos = (self.pos[0] - 40, self.pos[1] - 40)
+        self.counter = 0
+        self.lock()
+        #self.state.changeStopped()
+        self.state = self.superStateFly.getPoweringUp()
+        
+
     def changeSuperSaiyan(self):
         self.state = self.superStateFly.getSuperSaiyan()
         self.state.changeStopped()
     
     def changeNormal(self):
         self.state = self.superStateFly.getNormal()
+        self.unlock()
         self.state.changeStopped()
 
     def changeAttackRight(self):
@@ -143,4 +158,8 @@ class Character(MovableObject):
         ball = self.factory.makeBall(self.game, direction, ball_pos)
         self.game.addBall(ball)
 
-        
+    def lock(self):
+        self.game.lock()
+    
+    def unlock(self):
+        self.game.unlock()

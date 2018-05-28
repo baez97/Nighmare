@@ -240,6 +240,27 @@ class Normal(SuperState):
         else:
             self.changeStopped()
 
+class PoweringUp(SuperState):
+    def __init__(self, guy, dic, factory):
+        self.stateFly = factory.makeStateFlyweight(guy)
+        self.state = self.stateFly.getStopped()
+        self.dic = dic
+        self.guy = guy
+        self.currentImg = self.dic[0]
+
+    def move(self):
+        self.guy.powerUp()
+
+    def powerUp(self, counter):
+        if counter < 23:
+            self.currentImg = self.dic[counter]
+        else:
+            self.guy.unlock()
+            self.guy.pos = (self.guy.pos[0] + 40, self.guy.pos[1] + 40)
+            self.guy.changeSuperSaiyan()
+
+
+
 
 
     
