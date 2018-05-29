@@ -4,9 +4,9 @@ from State import *
 from StateFlyweight import *
 
 class MovableObject(object):
-    def __init__(self, game, dic):
+    def __init__(self, game, dic, pos):
         self.game = game
-        self.pos = (500, 500)
+        self.pos = pos
         self.dic_images = dic
         self.counter = 0
 
@@ -18,7 +18,7 @@ class MovableObject(object):
         
 class Character(MovableObject):
     def __init__(self, game, dic, dic_images_ss, dic_powerUp, factory):
-        super(Character, self).__init__(game, dic)
+        super(Character, self).__init__(game, dic, (500,500))
         self.dics = {'normal':dic, 'supersaiyan':dic_images_ss, 'powerup': dic_powerUp}
         self.superStateFly = factory.makeSuperStateFlyweight(self, self.dics)
         self.state = self.superStateFly.getNormal()

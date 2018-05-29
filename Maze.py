@@ -8,11 +8,12 @@ class Maze:
         line = []
         self.objects = []
         self.balls = []
+        self.enemies = []
         for i in range(0,20):
             for j in range(0,20):
                 if (j in (0, 19) or i in (0, 19)):
                     line.append(factory.makeWallTile(i, j))
-                elif i in (6, 13):
+                elif i%7==6 or j%7==6 and i not in range(6,13):
                     line.append(factory.makeObstacleTile(i,j))
                 else:
                     line.append(factory.makeGroundTile(i,j))
@@ -32,6 +33,11 @@ class Maze:
     def moveBalls(self):
         for ball in self.balls:
             ball.move()
+
+    def moveEnemies(self):
+        for enemy in self.enemies:
+            enemy.move()
+
     def paintCharacter(self):
         if self.game.locked:
             self.game.paint(self.black, (0,0))
@@ -43,6 +49,7 @@ class Maze:
         if not (self.game.isAttackingLeft() or self.game.isPoweringUp()): 
             self.paintFront()
         self.paintBalls()
+        self.paintEnemies()
     
     def paintGroundTile(self, x, y):
         real_pos = self.getRealGround(x,y)
@@ -63,8 +70,15 @@ class Maze:
         for ball in self.balls:
             ball.paint()
 
+    def paintEnemies(self):
+        for enemy in self.enemies:
+            enemy.paint()
+
     def addBall(self, ball):
         self.balls.append(ball)
+
+    def addEnemy(self, enemy):
+        self.enemies.append(enemy)
 
     def rePaint(self, pos):
         obj = self.objects[pos[0]/50][((pos[1]+30)/40) + 1]

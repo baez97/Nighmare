@@ -9,7 +9,7 @@ class Game:
     def __init__(self, factory):
         self.maze = factory.makeMaze(self)
         self.character = factory.makeCharacter(self)
-        self.display = pygame.display.set_mode((1000, 820))
+        self.display = pygame.display.set_mode((1000, 840))
         self.fpsClock = pygame.time.Clock()
         self.locked = False
 
@@ -20,6 +20,7 @@ class Game:
 
             if (not self.locked):
                 self.moveBalls()
+                self.moveEnemies()
 
             self.character.move()
 
@@ -84,8 +85,14 @@ class Game:
     def addBall(self, ball):
         self.maze.addBall(ball)
 
+    def addEnemy(self, enemy):
+        self.maze.addEnemy(enemy)
+
     def moveBalls(self):
         self.maze.moveBalls()
+
+    def moveEnemies(self):
+        self.maze.moveEnemies()
 
     def lock(self):
         self.locked = True
@@ -104,4 +111,7 @@ class Game:
 
 fm = FactoryMethod()
 game = Game(fm)
+game.addEnemy(fm.makeRightEnemy(game, (150, 102), 0))
+game.addEnemy(fm.makeRightEnemy(game, (150, 370), 10))
+game.addEnemy(fm.makeRightEnemy(game, (150, 623), 0))
 game.run()

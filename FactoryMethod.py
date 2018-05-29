@@ -4,6 +4,7 @@ from Tile import *
 from FactoryMethod import *
 from Maze import *
 from Ball import *
+from Enemy import *
 import pygame
 from pygame import *
 
@@ -20,6 +21,10 @@ class FactoryMethod:
                'f_1'  :pygame.image.load('images/ball/f_1.png'),
                'f_2'  :pygame.image.load('images/ball/f_2.png'),
                'f_3'  :pygame.image.load('images/ball/f_3.png')}
+
+        self.dic_right_enemy = (pygame.image.load('images/cell/r_1.png'),
+                                pygame.image.load('images/cell/r_2.png'),
+                                pygame.image.load('images/cell/r_3.png'))
 
     def makeCharacter(self, game):
         dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
@@ -114,5 +119,9 @@ class FactoryMethod:
     def makeBallFading(self):
         return BallFading()
     
+    def makeRightEnemy(self, game, pos, counter):
+        return RightEnemy(game, self.dic_right_enemy, pos, counter, self)
 
+    def makeLeftEnemy(self, game, pos, counter):
+        return LeftEnemy(game, self.dic_right_enemy, pos, counter, self)
         

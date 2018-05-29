@@ -2,16 +2,14 @@ from Character import *
 
 class Ball(MovableObject):
     def __init__(self, game, dic, stateDic, direction, pos):
-        super(Ball, self).__init__(game, dic)
+        super(Ball, self).__init__(game, dic, pos)
         self.img_dic = dic
         self.state_dic = stateDic
         self.image = dic[direction]
         self.state = stateDic[direction]
         self.img_fading = (dic['f_1'], dic['f_2'], dic['f_3'])
-        self.pos = pos
         self.wide = self.image.get_rect().right
         self.height = self.image.get_rect().bottom
-        self.counter = 0
         
 
     def move(self):
