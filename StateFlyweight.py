@@ -45,3 +45,18 @@ class SuperStateFlyweight:
 
     def getPoweringUp(self):
         return self.poweringUp
+
+class BallStateFlyweight:
+    def __init__(self, factory):
+        self.movingRight = factory.makeBallMovingRight()
+        self.movingLeft = factory.makeBallMovingLeft()
+        self.fading = factory.makeBallFading()
+
+    def getMovingRight(self):
+        return self.movingRight
+    
+    def getMovingLeft(self):
+        return self.movingLeft
+
+    def getFading(self):
+        return self.fading

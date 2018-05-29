@@ -10,7 +10,9 @@ class Maze:
         self.balls = []
         for i in range(0,20):
             for j in range(0,20):
-                if j in (0, 19) or i in (0,19) or (j%5 == 0 and i%2 != 0):
+                if (j in (0, 19) or i in (0, 19)):
+                    line.append(factory.makeWallTile(i, j))
+                elif i in (6, 13):
                     line.append(factory.makeObstacleTile(i,j))
                 else:
                     line.append(factory.makeGroundTile(i,j))
@@ -19,6 +21,7 @@ class Maze:
 
         self.ground_img   = pygame.image.load('images/GroundTile.png')
         self.obstacle_img = pygame.image.load('images/GrassTile.png')
+        self.wall_img = pygame.image.load('images/WallTile.png')
         self.black = pygame.image.load('images/Black.png')
 
     def paintTiles(self):
@@ -37,7 +40,8 @@ class Maze:
     def paintAll(self):
         self.paintTiles()
         self.paintCharacter()
-        self.paintFront()
+        if not (self.game.isAttackingLeft() or self.game.isPoweringUp()): 
+            self.paintFront()
         self.paintBalls()
     
     def paintGroundTile(self, x, y):
@@ -47,6 +51,10 @@ class Maze:
     def paintObstacleTile(self, x, y):
         real_pos = self.getRealObstacle(x, y)
         self.game.paint(self.obstacle_img, real_pos)
+    
+    def paintWallTile(self, x, y):
+        real_pos = self.getRealWall(x, y)
+        self.game.paint(self.wall_img, real_pos)
 
     def paintFront(self):
         self.game.paintFront()
@@ -74,6 +82,11 @@ class Maze:
     def getRealObstacle(self, x, y):
         real_x = x*50
         real_y = y*40
+        return (real_x, real_y)
+
+    def getRealWall(self, x, y):
+        real_x = x*50
+        real_y = y*40 - 20
         return (real_x, real_y)
 
     def canMoveUp(self, new_pos):
@@ -130,7 +143,8 @@ class Maze:
 
         return -1
         
-    
+    def deleteBall(self, ball):
+        self.balls.remove(ball)
 
 
 

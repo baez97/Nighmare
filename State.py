@@ -13,6 +13,8 @@ class State(object):
         return False
     def isAttackingLeft(self):
         return False
+    def isAttackingRight(self):
+        return False
 
 class MovingUp(State):
     def __init__(self, guy):
@@ -172,6 +174,8 @@ class SuperState(object):
         return self.state.isAttackingLeft()
     def isAttackingRight(self):
         return self.state.isAttackingRight()
+    def isPoweringUp(self):
+        return False
 
     def getNextPos(self):
         return self.state.getNextPos(self.velocity)
@@ -259,8 +263,18 @@ class PoweringUp(SuperState):
             self.guy.pos = (self.guy.pos[0] + 40, self.guy.pos[1] + 40)
             self.guy.changeSuperSaiyan()
 
+    def isPoweringUp(self):
+        return True
 
 
+class BallMovingRight():
+    def move(self, ball):
+        ball.moveRight()
 
+class BallMovingLeft():
+    def move(self, ball):
+        ball.moveLeft()
 
-    
+class BallFading():
+    def move(self, ball):
+        ball.fade()

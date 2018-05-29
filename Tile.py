@@ -18,3 +18,10 @@ class ObstacleTile(Tile):
     
     def isObstacle(self):
         return ((self.cel_x, self.cel_y))
+
+class WallTile(Tile):
+    def paint(self, maze):
+        maze.paintWallTile(self.cel_x, self.cel_y)
+
+    def isObstacle(self):
+        return ((self.cel_x, self.cel_y))

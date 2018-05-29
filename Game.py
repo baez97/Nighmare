@@ -61,7 +61,7 @@ class Game:
             self.fpsClock.tick(30)
 
     def paint(self, image, position):
-        self.display.blit(image, position)
+        self.display.blit(image, (position[0], position[1] + 10))
 
     def canMoveUp(self, new_pos):
         return self.maze.canMoveUp(new_pos)
@@ -93,6 +93,14 @@ class Game:
     def unlock(self):
         self.locked = False
 
+    def deleteBall(self, ball):
+        self.maze.deleteBall(ball)
+
+    def isAttackingLeft(self):
+        return self.character.isAttackingLeft()
+
+    def isPoweringUp(self):
+        return self.character.isPoweringUp()
 
 fm = FactoryMethod()
 game = Game(fm)

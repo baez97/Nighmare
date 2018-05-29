@@ -150,6 +150,12 @@ class Character(MovableObject):
         self.rect = self.state.getImg().get_rect()
         self.rect.move(self.pos)
 
+    def isAttackingLeft(self):
+        return self.state.isAttackingLeft()
+
+    def isPoweringUp(self):
+        return self.state.isPoweringUp()
+
     def getPos(self):
         return self.pos
 
