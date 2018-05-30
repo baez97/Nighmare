@@ -31,6 +31,12 @@ class Enemy(MovableObject):
         ball_pos = self.getBallPosition()
         self.createBall(ball_pos)
 
+    def getWidth(self):
+        return self.image.get_rect().right
+    
+    def getHeight(self):
+        return self.image.get_rect().bottom
+
 class RightEnemy(Enemy):
     def getBallPosition(self):
         return (self.pos[0] + (self.image.get_rect().right - 20), self.pos[1])

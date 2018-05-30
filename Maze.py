@@ -160,6 +160,8 @@ class Maze:
     def deleteBall(self, ball):
         self.balls.remove(ball)
 
+    def getEnemies(self):
+        return self.enemies
 
 
 

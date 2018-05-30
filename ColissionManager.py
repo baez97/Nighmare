@@ -10,6 +10,7 @@ class ColissionManager:
         lower_limit = ball.getPos()[1] + ball.getHeight()
         self.checkRightHitChar(ball, right_limit, upper_limit, lower_limit)
         self.checkRightHitBorder(ball, right_limit)
+        self.checkRightHitEnemy(ball, right_limit, upper_limit, lower_limit)
 
     def checkRightHitBorder(self, ball, right_limit):
         if right_limit > 950:
@@ -24,6 +25,17 @@ class ColissionManager:
         if(right_limit > char_left_limit and right_limit - 11 < char_left_limit):
             if(upper_limit < char_lower_limit and lower_limit > char_upper_limit):
                 self.charColission(ball)
+    
+    def checkRightHitEnemy(self, ball, right_limit, upper_limit, lower_limit):
+        for enemy in self.game.getEnemies():
+            enemy_pos = enemy.getPos()
+            enemy_left_limit = enemy_pos[0]
+            enemy_upper_limit = enemy_pos[1]
+            enemy_lower_limit = enemy_pos[1] + enemy.getHeight()
+            
+            if(right_limit > enemy_left_limit and right_limit - 11 < enemy_left_limit):
+                if(upper_limit < enemy_lower_limit and lower_limit > enemy_upper_limit):
+                    self.enemyColission(ball, enemy)
 
     def checkLeftColission(self, ball):
         left_limit = ball.getPos()[0]
@@ -31,6 +43,7 @@ class ColissionManager:
         lower_limit = ball.getPos()[1] + ball.getHeight()
         self.checkLeftHitChar(ball, left_limit, upper_limit, lower_limit)
         self.checkLeftHitBorder(ball, left_limit)
+        self.checkLeftHitEnemy(ball, left_limit, upper_limit, lower_limit)
 
     def checkLeftHitBorder(self, ball, left_limit):
         if left_limit < 50:
@@ -46,6 +59,21 @@ class ColissionManager:
             if(upper_limit < char_lower_limit and lower_limit > char_upper_limit):
                 self.charColission(ball)
 
+    def checkLeftHitEnemy(self, ball, left_limit, upper_limit, lower_limit):
+        for enemy in self.game.getEnemies():
+            enemy_pos = enemy.getPos()
+            enemy_right_limit = enemy_pos[0] + enemy.getWidth()
+            enemy_upper_limit = enemy_pos[1]
+            enemy_lower_limit = enemy_pos[1] + enemy.getHeight()
+
+            if(left_limit < enemy_right_limit and left_limit + 11 > enemy_right_limit):
+                if(upper_limit < enemy_lower_limit and lower_limit > enemy_upper_limit):
+                    self.enemyColission(ball, enemy)
+
     def charColission(self, ball):
         self.game.hurtCharacter(ball.getDamage())
+        ball.changeFading()
+
+    def enemyColission(self, ball, enemy):
+        self.game.maze.enemies.remove(enemy)
         ball.changeFading()

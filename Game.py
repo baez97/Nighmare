@@ -127,6 +127,8 @@ class Game:
     def getColissionManager(self):
         return self.colissionManager
 
+    def getEnemies(self):
+        return self.maze.getEnemies()
 fm = FactoryMethod()
 game = Game(fm)
 game.addEnemy(fm.makeRightEnemy(game, (150, 102), 0))
