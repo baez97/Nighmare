@@ -11,7 +11,10 @@ class Enemy(MovableObject):
         self.game.paint(self.image, self.pos)
 
     def move(self):
-        if self.counter < 20:
+        if self.counter < 18:
+            self.image = self.dic_images[0]
+            self.counter += 1
+        elif self.counter < 20:
             self.image = self.dic_images[1]
             self.counter += 1
         elif self.counter == 20:
@@ -26,20 +29,18 @@ class Enemy(MovableObject):
 
     def addBall(self):
         ball_pos = self.getBallPosition()
-        ball = self.createBall(ball_pos)
-        
-        self.game.addBall(ball)
+        self.createBall(ball_pos)
 
 class RightEnemy(Enemy):
     def getBallPosition(self):
         return (self.pos[0] + (self.image.get_rect().right - 20), self.pos[1])
 
     def createBall(self, ball_pos):
-        return self.factory.makeBall(self.game, 'right', ball_pos)
+        self.game.addBall(ball_pos, 'right')
 
 class LeftEnemy(Enemy):
     def getBallPosition(self):
         return (self.pos[0], self.pos[1])
 
     def createBall(self, ball_pos):
-        return self.factory.makeBall(self.game, 'left', ball_pos)
+        self.game.addBall(ball_pos, 'left')

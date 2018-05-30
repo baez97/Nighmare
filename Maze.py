@@ -40,7 +40,7 @@ class Maze:
 
     def paintCharacter(self):
         if self.game.locked:
-            self.game.paint(self.black, (0,0))
+            self.game.paint(self.black, (0,-10))
         self.game.paintCharacter() 
 
     def paintAll(self):

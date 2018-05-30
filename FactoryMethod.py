@@ -5,13 +5,13 @@ from FactoryMethod import *
 from Maze import *
 from Ball import *
 from Enemy import *
+from ColissionManager import *
 import pygame
 from pygame import *
 
 class FactoryMethod:
     def __init__(self):
         self.ballStateFlyweight = BallStateFlyweight(self)
-
         self.state_dic = {'right': self.ballStateFlyweight.getMovingRight(),
                         'left' : self.ballStateFlyweight.getMovingLeft(),
                         'fading': self.ballStateFlyweight.getFading()}
@@ -25,6 +25,10 @@ class FactoryMethod:
         self.dic_right_enemy = (pygame.image.load('images/cell/r_1.png'),
                                 pygame.image.load('images/cell/r_2.png'),
                                 pygame.image.load('images/cell/r_3.png'))
+
+        self.dic_left_enemy =  (pygame.image.load('images/cell/l_1.png'),
+                                pygame.image.load('images/cell/l_2.png'),
+                                pygame.image.load('images/cell/l_3.png'))
 
     def makeCharacter(self, game):
         dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
@@ -108,7 +112,7 @@ class FactoryMethod:
         return WallTile(x, y)
 
     def makeBall(self, game, direction, pos):
-        return Ball(game, self.ball_dic, self.state_dic, direction, pos)
+        return Ball(game, self.ball_dic, self.state_dic, direction, pos, game.getColissionManager())
 
     def makeBallMovingRight(self):
         return BallMovingRight()
@@ -123,5 +127,8 @@ class FactoryMethod:
         return RightEnemy(game, self.dic_right_enemy, pos, counter, self)
 
     def makeLeftEnemy(self, game, pos, counter):
-        return LeftEnemy(game, self.dic_right_enemy, pos, counter, self)
+        return LeftEnemy(game, self.dic_left_enemy, pos, counter, self)
+
+    def makeColissionManager(self, game):
+        return ColissionManager(game)
         

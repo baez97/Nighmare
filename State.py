@@ -271,9 +271,15 @@ class BallMovingRight():
     def move(self, ball):
         ball.moveRight()
 
+    def getNextLimit(self, ball):
+        return (ball.pos[0] + ball.getWidth(), ball.pos[1], ball.pos[1] + ball.getHeight())
+
 class BallMovingLeft():
     def move(self, ball):
         ball.moveLeft()
+    
+    def getNextLimit(self, ball):
+        return (ball.pos[0] + ball.getWidth(), ball.pos[1], ball.pos[1] + ball.getHeight())
 
 class BallFading():
     def move(self, ball):

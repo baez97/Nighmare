@@ -7,11 +7,13 @@ from FactoryMethod import *
 
 class Game:
     def __init__(self, factory):
+        self.factory = factory
         self.maze = factory.makeMaze(self)
         self.character = factory.makeCharacter(self)
         self.display = pygame.display.set_mode((1000, 840))
         self.fpsClock = pygame.time.Clock()
         self.locked = False
+        self.colissionManager = factory.makeColissionManager(self)
 
     def run(self):
         pygame.init()
@@ -82,7 +84,8 @@ class Game:
     def paintFront(self):
         self.maze.rePaint(self.character.getPos())
 
-    def addBall(self, ball):
+    def addBall(self, ball_pos, direction):
+        ball = self.factory.makeBall(self, direction, ball_pos)
         self.maze.addBall(ball)
 
     def addEnemy(self, enemy):
@@ -109,9 +112,25 @@ class Game:
     def isPoweringUp(self):
         return self.character.isPoweringUp()
 
+    def getCharacterPosition(self):
+        return self.character.getPos()
+
+    def getCharacterWidth(self):
+        return self.character.getWidth()
+
+    def getCharacterHeight(self):
+        return self.character.getHeight()
+
+    def hurtCharacter(self, damage):
+        self.character.hurt(damage)
+
+    def getColissionManager(self):
+        return self.colissionManager
+
 fm = FactoryMethod()
 game = Game(fm)
 game.addEnemy(fm.makeRightEnemy(game, (150, 102), 0))
 game.addEnemy(fm.makeRightEnemy(game, (150, 370), 10))
 game.addEnemy(fm.makeRightEnemy(game, (150, 623), 0))
+game.addEnemy(fm.makeLeftEnemy(game, (800, 500), 0))
 game.run()

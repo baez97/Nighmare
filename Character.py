@@ -15,6 +15,9 @@ class MovableObject(object):
 
     def paint(self):
         self.game.paint(self.state.getImg(), self.pos)
+
+    def getPos(self):
+        return self.pos
         
 class Character(MovableObject):
     def __init__(self, game, dic, dic_images_ss, dic_powerUp, factory):
@@ -23,7 +26,10 @@ class Character(MovableObject):
         self.superStateFly = factory.makeSuperStateFlyweight(self, self.dics)
         self.state = self.superStateFly.getNormal()
         self.rect = self.state.getImg().get_rect()
+        self.width = self.rect.right
+        self.height = self.rect.bottom
         self.factory = factory
+        self.life = 10
 
     def moveUp(self):
         new_pos = self.state.getNextPos()
@@ -150,22 +156,31 @@ class Character(MovableObject):
         self.rect = self.state.getImg().get_rect()
         self.rect.move(self.pos)
 
+    def hurt(self, damage):
+        self.life -= damage
+        print 'Character damaged!, current life ->', self.life
+        
     def isAttackingLeft(self):
         return self.state.isAttackingLeft()
 
     def isPoweringUp(self):
         return self.state.isPoweringUp()
 
-    def getPos(self):
-        return self.pos
+    def getWidth(self):
+        return self.width
+
+    def getHeight(self):
+        return self.height
 
     def addBall(self, direction, displacement):
         ball_pos = (self.pos[0] + displacement[0], self.pos[1] + displacement[1])
         ball = self.factory.makeBall(self.game, direction, ball_pos)
-        self.game.addBall(ball)
+        self.game.addBall(ball_pos, direction)
 
     def lock(self):
         self.game.lock()
     
     def unlock(self):
         self.game.unlock()
+
+    
