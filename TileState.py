@@ -9,14 +9,14 @@ class TileState:
 
 class HoleClosed(TileState):
     def interact(self, tile, character):
-        if character.hasKey():
+        if character.useKey():
             tile.open()
         else:
             print "The hole is locked! you need a key"
 
 class HoleOpened(TileState):
     def interact(self, tile, character):
-        print "The hole is opened"
+        tile.enter()
 
 
 class KeyObtained(TileState):
@@ -38,3 +38,26 @@ class HeartUnobtained(TileState):
         print "The character has obtained an Extra Life!"
         tile.obtain()
         character.addLife()
+
+class MedalObtained(TileState):
+    def interact(self, tile, character):
+        pass
+
+class RedMedalUnobtained(TileState):
+    def interact(self, tile, character):
+        print "Medal has been obtained!"
+        tile.obtain()
+        character.addRedMedal()
+
+class BlueMedalUnobtained(TileState):
+    def interact(self, tile, character):
+        print "Blue Medal has been obtained"
+        tile.obtain()
+        character.addBlueMedal()
+
+class GoldMedalUnobtained(TileState):
+    def interact(self, tile, character):
+        print "Gold Medal has been obtained"
+        tile.obtain()
+        character.addGoldMedal()
+

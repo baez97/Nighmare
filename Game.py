@@ -8,7 +8,9 @@ from FactoryMethod import *
 class Game:
     def __init__(self, factory):
         self.factory = factory
-        self.maze = factory.makeMaze(self)
+        self.mazes = {'top':factory.makeTopMaze(self),
+                      'underground':factory.makeUndergroundMaze(self)}
+        self.maze = self.mazes['top']
         self.character = factory.makeCharacter(self)
         self.display = pygame.display.set_mode((1000, 840))
         self.display.fill((255, 255, 255))
@@ -68,6 +70,17 @@ class Game:
 
     def paint(self, image, position):
         self.display.blit(image, (position[0], position[1] + 15))
+
+    def paintKey(self):
+        if self.character.hasKey():
+            self.paint(self.factory.makeKeyImage(), (310, 755))
+
+    def paintLife(self):
+        num_lives = self.character.getLife()
+        for i in range(0,num_lives):
+            x = 50 + 30*i
+            y = 780
+            self.paint(self.factory.makeHeartImage(), (x,y))
 
     def canMoveUp(self, new_pos):
         return self.maze.canMoveUp(new_pos)
@@ -140,6 +153,23 @@ class Game:
         ground_x = pos[0] + self.getCharacterWidth()/2
         ground_y = pos[1] + self.getCharacterHeight() - 30
         return self.maze.getCell(ground_x, ground_y)
+
+    def changeMazeTo(self, maze):
+        self.maze = self.mazes[maze]
+
+    def paintMedals(self):
+        self.character.paintMedalImages()
+
+    def paintBlueMedal(self):
+        self.paint(self.factory.makeBlueImage(), (400, 755))
+
+    def paintRedMedal(self):
+        self.paint(self.factory.makeRedImage(), (450, 755))
+
+    def paintGoldMedal(self):
+        self.paint(self.factory.makeGoldImage(), (500, 755))
+
+
 fm = FactoryMethod()
 game = Game(fm)
 game.run()

@@ -12,6 +12,11 @@ class TileDecorator(Tile):
 
 
 class HoleDecorator(TileDecorator):
+    def __init__(self, x, y, component, state_string, state_dic, maze_1, maze_2):
+        super(HoleDecorator, self).__init__(x, y, component, state_string, state_dic)
+        self.maze_1 = maze_1
+        self.maze_2 = maze_2
+
     def paint(self, maze):
         self.component.paint(maze)
         image = self.state.getImage()
@@ -19,6 +24,9 @@ class HoleDecorator(TileDecorator):
 
     def open(self):
         self.state = self.state_dic['opened']
+
+    def enter(self):
+        self.maze_1.goTo(self.maze_2)
 
 class KeyDecorator(TileDecorator):
     def paint(self, maze):
@@ -37,5 +45,24 @@ class HeartDecorator(TileDecorator):
 
     def obtain(self):
         self.state = self.state_dic['heart_obtained']
+
+class MedalDecorator(TileDecorator):
+    def paint(self, maze):
+        self.component.paint(maze)
+        image = self.state.getImage()
+        maze.paintMedalDecorator(image, self.cel_x, self.cel_y)
+
+class RedMedalDecorator(MedalDecorator):
+    def obtain(self):
+        self.state = self.state_dic['obtained']
+
+class BlueMedalDecorator(MedalDecorator):
+    def obtain(self):
+        self.state = self.state_dic['obtained']
+
+class GoldMedalDecorator(MedalDecorator):
+    def obtain(self):
+        self.state = self.state_dic['obtained']
+
 
 

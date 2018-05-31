@@ -38,26 +38,29 @@ class FactoryMethod:
                               'key_obtained': pygame.image.load('images/null.png'),
                               'key_unobtained': pygame.image.load('images/items/key.png'),
                               'heart_obtained': pygame.image.load('images/null.png'),
-                              'heart_unobtained': pygame.image.load('images/heart/h_1.png')}
+                              'heart_unobtained': pygame.image.load('images/heart/h_1.png'),
+                              'medal_obtained': pygame.image.load('images/null.png'),
+                              'red_unobtained': pygame.image.load('images/items/RedMedal.png'),
+                              'blue_unobtained': pygame.image.load('images/items/BlueMedal.png'),
+                              'gold_unobtained': pygame.image.load('images/items/GoldMedal.png')}
+
+        self.dic_medals_img = {'red': {'obtained': self.dic_tiles_img['red_unobtained'],  'empty': self.dic_tiles_img['medal_obtained']},
+                               'blue':{'obtained': self.dic_tiles_img['blue_unobtained'], 'empty': self.dic_tiles_img['medal_obtained']},
+                               'gold':{'obtained': self.dic_tiles_img['gold_unobtained'], 'empty': self.dic_tiles_img['medal_obtained']}}
 
         self.dic_tiles_status = {'closed': self.makeHoleClosed(),
                                  'opened': self.makeHoleOpened(),
                                  'key_obtained': self.makeKeyObtained(),
                                  'key_unobtained': self.makeKeyUnobtained(),
                                  'heart_obtained': self.makeHeartObtained(),
-                                 'heart_unobtained': self.makeHeartUnobtained()}
+                                 'heart_unobtained': self.makeHeartUnobtained(),
+                                 'red_unobtained': self.makeRedMedalUnobtained(),
+                                 'blue_unobtained': self.makeBlueMedalUnobtained(),
+                                 'gold_unobtained': self.makeGoldMedalUnobtained(),
+                                 'obtained': self.makeMedalObtained()}
 
         self.dic_images_key = {'empty': pygame.image.load('images/items/key.png'),
                                'obtained': pygame.image.load('images/items/key.png')}
-
-        self.dic_images_red_medal = {'empty': pygame.image.load('images/items/RedMedal_empty.png'),
-                                     'obtained': pygame.image.load('images/items/RedMedal.png')}
-
-        self.dic_images_blue_medal = {'empty': pygame.image.load('images/items/BlueMedal_empty.png'),
-                                     'obtained': pygame.image.load('images/items/BlueMedal.png')}
-
-        self.dic_images_gold_medal = {'empty': pygame.image.load('images/items/GoldMedal_empty.png'),
-                                     'obtained': pygame.image.load('images/items/GoldMedal.png')}
 
     def makeCharacter(self, game):
         dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
@@ -128,8 +131,11 @@ class FactoryMethod:
     def makePoweringUp(self, guy, dic):
         return PoweringUp(guy, dic, self)
 
-    def makeMaze(self, game):
-        return Maze(game, self)
+    def makeTopMaze(self, game):
+        return TopMaze(game, self)
+
+    def makeUndergroundMaze(self, game):
+        return UndergroundMaze(game, self)
 
     def makeGroundTile(self, x, y):
         return GroundTile(x, y)
@@ -140,13 +146,13 @@ class FactoryMethod:
     def makeWallTile(self, x, y):
         return WallTile(x, y)
 
-    def makeClosedHoleTile(self, x, y):
+    def makeClosedHoleTile(self, x, y, maze_1, maze_2):
         component = self.makeGroundTile(x, y)
-        return HoleDecorator(x, y, component, 'closed', self.dic_tiles_status)
+        return HoleDecorator(x, y, component, 'closed', self.dic_tiles_status, maze_1, maze_2)
 
-    def makeOpenedHoleTile(self, x, y):
+    def makeOpenedHoleTile(self, x, y, maze_1, maze_2):
         component = self.makeGroundTile(x, y)
-        return HoleDecorator(x, y, component, 'closed', self.dic_tiles_status)
+        return HoleDecorator(x, y, component, 'opened', self.dic_tiles_status, maze_1, maze_2)
 
     def makeKeyTile(self, x, y):
         component = self.makeGroundTile(x, y)
@@ -155,6 +161,18 @@ class FactoryMethod:
     def makeHeartTile(self, x, y):
         component = self.makeGroundTile(x, y)
         return HeartDecorator(x, y, component, 'heart_unobtained', self.dic_tiles_status)
+
+    def makeRedMedalTile(self, x, y):
+        component = self.makeGroundTile(x, y)
+        return RedMedalDecorator(x, y, component, 'red_unobtained', self.dic_tiles_status)
+
+    def makeBlueMedalTile(self, x, y):
+        component = self.makeGroundTile(x, y)
+        return BlueMedalDecorator(x, y, component, 'blue_unobtained', self.dic_tiles_status)
+
+    def makeGoldMedalTile(self, x, y):
+        component = self.makeGroundTile(x, y)
+        return GoldMedalDecorator(x, y, component, 'gold_unobtained', self.dic_tiles_status)
 
     def makeBall(self, game, direction, pos):
         return Ball(game, self.ball_dic, self.state_dic, direction, pos, game.getColissionManager())
@@ -187,13 +205,13 @@ class FactoryMethod:
         return Key((100,100), self.dic_images_key)
 
     def makeRedMedal(self):
-        return RedMedal((200,200), self.dic_images_red_medal)
+        return RedMedal((200,200), self.dic_medals_img['red'])
 
     def makeBlueMedal(self):
-        return BlueMedal((300, 300), self.dic_images_blue_medal)
+        return BlueMedal((300, 300), self.dic_medals_img['blue'])
 
     def makeGoldMedal(self):
-        return GoldMedal((400, 400), self.dic_images_gold_medal)
+        return GoldMedal((400, 400), self.dic_medals_img['gold'])
 
     def makeKeyObtained(self):
         return KeyObtained(self.dic_tiles_img['key_obtained'])
@@ -206,12 +224,44 @@ class FactoryMethod:
 
     def makeHeartUnobtained(self):
         return HeartUnobtained(self.dic_tiles_img['heart_unobtained'])
+
+    def makeMedalObtained(self):
+        return MedalObtained(self.dic_tiles_img['medal_obtained'])
+    
+    def makeRedMedalUnobtained(self):
+        return RedMedalUnobtained(self.dic_tiles_img['red_unobtained'])
+
+    def makeBlueMedalUnobtained(self):
+        return BlueMedalUnobtained(self.dic_tiles_img['blue_unobtained'])
+
+    def makeGoldMedalUnobtained(self):
+        return GoldMedalUnobtained(self.dic_tiles_img['gold_unobtained'])
     
     def makeBag(self, character):
         return Bag((50,50), self, character, self.dic_tiles_img['key_unobtained'])
     
     def makeMedalBox(self, bag):
         return MedalBox((100,100), self, bag, self.dic_tiles_img['key_unobtained'])
+
+    def makeHeartImage(self):
+        return self.dic_tiles_img['heart_unobtained']
+
+    def makeRedMedalImage(self):
+        return self.dic_images_red_medal
+
+    def makeKeyImage(self):
+        return self.dic_tiles_img['key_unobtained']
+
+    def makeRedImage(self):
+        return self.dic_tiles_img['red_unobtained']
+
+    def makeBlueImage(self):
+        return self.dic_tiles_img['blue_unobtained']
+
+    def makeGoldImage(self):
+        return self.dic_tiles_img['gold_unobtained']
+
+    
 
     
         

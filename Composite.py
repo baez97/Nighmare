@@ -26,6 +26,8 @@ class Component(object):
         pass
     def obtainKey(self):
         pass
+    def paintMedalImages(self, game):
+        pass
 
 class Item(Component):
     def __init__(self, pos, dic_img):
@@ -42,7 +44,7 @@ class Item(Component):
         self.obtained = True
 
 class Key(Item):
-    def hasKey(self):
+    def useKey(self):
         if self.obtained:
             self.img = self.dic_img['empty']
             self.obtained = False
@@ -50,10 +52,12 @@ class Key(Item):
         else:
             return False
 
+    def hasKey(self):
+        return self.obtained
+
     def obtainKey(self):
         self.img = self.dic_img['obtained']
         self.obtained = True
-        print "El personaje ha recibido la llave correctamente!"
 
 class Composite(Component):
     def __init__(self, pos, factory):
@@ -87,19 +91,29 @@ class Bag(Composite):
         for son in self.sons:
             son.addGoldMedal()
 
+    def useKey(self):
+        for son in self.sons:
+            if son.useKey():
+                return True
+        return False
+
     def hasKey(self):
         for son in self.sons:
             if son.hasKey():
                 return True
         return False
 
-    def useKey(self):
-        for son in self.sons:
-            son.useKey()
-
     def addKey(self):
         for son in self.sons:
             son.obtainKey()
+
+    def notifyCharacter(self):
+        self.character.changePoweringUp()
+
+    def paintMedalImages(self, game):
+        for son in self.sons:
+            son.paintMedalImages(game)
+
         
 class MedalBox(Composite):
     def __init__(self, pos, factory, bag, image):
@@ -113,44 +127,64 @@ class MedalBox(Composite):
 
     def addRedMedal(self):
         for son in self.sons:
-            son.obtainRedMedal()
-            self.checkMedals()
+            if son.obtainRedMedal():
+                self.checkMedals()
     
     def addBlueMedal(self):
         for son in self.sons:
-            son.obtainBlueMedal()
-            self.checkMedals()
+            if son.obtainBlueMedal():
+                self.checkMedals()
 
     def addGoldMedal(self):
         for son in self.sons:
-            son.obtainGoldMedal()
-            self.checkMedals()
+            if son.obtainGoldMedal():
+                self.checkMedals()
 
     def checkMedals(self):
-        counter += 1
-        if counter == 3:
-            print "ALL THE MEDALS HAVE BEEN OBTAINED"
+        self.counterMedals += 1
+        print 'checking medals -> ', self.counterMedals
+        if self.counterMedals == 3:
+            self.bag.notifyCharacter()
+
+    def paintMedalImages(self, game):
+        for son in self.sons:
+            son.paintMedalImages(game)
 
 class Medal(Item):
-    def obtainRedMedal():
+    def obtainRedMedal(self):
         pass
-    def obtainBlueMedal():
+    def obtainBlueMedal(self):
         pass
-    def obtainGoldMedal():
+    def obtainGoldMedal(self):
         pass
 
 class BlueMedal(Medal):
-    def obtainBlueMedal():
+    def obtainBlueMedal(self):
         self.img = self.dic_img['obtained']
         self.obtained = True
+        return True
+
+    def paintMedalImages(self, game):
+        if self.obtained:
+            game.paintBlueMedal()
 
 class RedMedal(Medal):
-    def obtainRedMedal():
+    def obtainRedMedal(self):
         self.img = self.dic_img['obtained']
         self.obtained = True
+        return True
+
+    def paintMedalImages(self, game):
+        if self.obtained:
+            game.paintRedMedal()
 
 class GoldMedal(Medal):
-    def obtainGoldMedal():
+    def obtainGoldMedal(self):
         self.img = self.dic_img['obtained']
         self.obtained = True
+        return True
+
+    def paintMedalImages(self, game):
+        if self.obtained:
+            game.paintGoldMedal()
         

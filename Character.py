@@ -29,7 +29,7 @@ class Character(MovableObject):
         self.width = self.rect.right
         self.height = self.rect.bottom
         self.factory = factory
-        self.life = 10
+        self.life = 5
         self.bag = factory.makeBag(self)
 
     def moveUp(self):
@@ -191,10 +191,26 @@ class Character(MovableObject):
     def addKey(self):
         self.bag.addKey()
 
+    def useKey(self):
+        return self.bag.useKey()
+
     def hasKey(self):
         return self.bag.hasKey()
 
     def addLife(self):
-        self.life += 10
+        self.life += 1
         print self.life
+
+    def getLife(self):
+        return self.life
+
+    def addRedMedal(self):
+        self.bag.addRedMedal()
+    def addBlueMedal(self):
+        self.bag.addBlueMedal()
+    def addGoldMedal(self):
+        self.bag.addGoldMedal()
+
+    def paintMedalImages(self):
+        self.bag.paintMedalImages(self.game)
     

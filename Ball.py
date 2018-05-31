@@ -10,7 +10,7 @@ class Ball(MovableObject):
         self.img_fading = (dic['f_1'], dic['f_2'], dic['f_3'])
         self.width = self.image.get_rect().right
         self.height = self.image.get_rect().bottom
-        self.damage = 20
+        self.damage = 1
         self.colissionManager = colissionManager
         
 
