@@ -8,6 +8,7 @@ from Enemy import *
 from ColissionManager import *
 from TileDecorator import *
 from TileState import *
+from Composite import *
 import pygame
 from pygame import *
 
@@ -33,10 +34,30 @@ class FactoryMethod:
                                 pygame.image.load('images/cell/l_3.png'))
 
         self.dic_tiles_img = {'closed': pygame.image.load('images/HoleTile_locked.png'),
-                          'opened': pygame.image.load('images/HoleTile.png')}
+                              'opened': pygame.image.load('images/HoleTile.png'),
+                              'key_obtained': pygame.image.load('images/null.png'),
+                              'key_unobtained': pygame.image.load('images/items/key.png'),
+                              'heart_obtained': pygame.image.load('images/null.png'),
+                              'heart_unobtained': pygame.image.load('images/heart/h_1.png')}
 
         self.dic_tiles_status = {'closed': self.makeHoleClosed(),
-                                 'opened': self.makeHoleOpened()}
+                                 'opened': self.makeHoleOpened(),
+                                 'key_obtained': self.makeKeyObtained(),
+                                 'key_unobtained': self.makeKeyUnobtained(),
+                                 'heart_obtained': self.makeHeartObtained(),
+                                 'heart_unobtained': self.makeHeartUnobtained()}
+
+        self.dic_images_key = {'empty': pygame.image.load('images/items/key.png'),
+                               'obtained': pygame.image.load('images/items/key.png')}
+
+        self.dic_images_red_medal = {'empty': pygame.image.load('images/items/RedMedal_empty.png'),
+                                     'obtained': pygame.image.load('images/items/RedMedal.png')}
+
+        self.dic_images_blue_medal = {'empty': pygame.image.load('images/items/BlueMedal_empty.png'),
+                                     'obtained': pygame.image.load('images/items/BlueMedal.png')}
+
+        self.dic_images_gold_medal = {'empty': pygame.image.load('images/items/GoldMedal_empty.png'),
+                                     'obtained': pygame.image.load('images/items/GoldMedal.png')}
 
     def makeCharacter(self, game):
         dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
@@ -127,6 +148,14 @@ class FactoryMethod:
         component = self.makeGroundTile(x, y)
         return HoleDecorator(x, y, component, 'closed', self.dic_tiles_status)
 
+    def makeKeyTile(self, x, y):
+        component = self.makeGroundTile(x, y)
+        return KeyDecorator(x, y, component, 'key_unobtained', self.dic_tiles_status)
+
+    def makeHeartTile(self, x, y):
+        component = self.makeGroundTile(x, y)
+        return HeartDecorator(x, y, component, 'heart_unobtained', self.dic_tiles_status)
+
     def makeBall(self, game, direction, pos):
         return Ball(game, self.ball_dic, self.state_dic, direction, pos, game.getColissionManager())
 
@@ -153,6 +182,36 @@ class FactoryMethod:
 
     def makeHoleOpened(self):
         return HoleOpened(self.dic_tiles_img['opened'])
+
+    def makeKey(self):
+        return Key((100,100), self.dic_images_key)
+
+    def makeRedMedal(self):
+        return RedMedal((200,200), self.dic_images_red_medal)
+
+    def makeBlueMedal(self):
+        return BlueMedal((300, 300), self.dic_images_blue_medal)
+
+    def makeGoldMedal(self):
+        return GoldMedal((400, 400), self.dic_images_gold_medal)
+
+    def makeKeyObtained(self):
+        return KeyObtained(self.dic_tiles_img['key_obtained'])
+    
+    def makeKeyUnobtained(self):
+        return KeyUnobtained(self.dic_tiles_img['key_unobtained'])
+
+    def makeHeartObtained(self):
+        return HeartObtained(self.dic_tiles_img['heart_obtained'])
+
+    def makeHeartUnobtained(self):
+        return HeartUnobtained(self.dic_tiles_img['heart_unobtained'])
+    
+    def makeBag(self, character):
+        return Bag((50,50), self, character, self.dic_tiles_img['key_unobtained'])
+    
+    def makeMedalBox(self, bag):
+        return MedalBox((100,100), self, bag, self.dic_tiles_img['key_unobtained'])
 
     
         

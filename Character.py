@@ -30,6 +30,7 @@ class Character(MovableObject):
         self.height = self.rect.bottom
         self.factory = factory
         self.life = 10
+        self.bag = factory.makeBag(self)
 
     def moveUp(self):
         new_pos = self.state.getNextPos()
@@ -187,4 +188,13 @@ class Character(MovableObject):
         currentCell = self.game.getCell(self.pos)
         currentCell.interact(self)
 
+    def addKey(self):
+        self.bag.addKey()
+
+    def hasKey(self):
+        return self.bag.hasKey()
+
+    def addLife(self):
+        self.life += 10
+        print self.life
     

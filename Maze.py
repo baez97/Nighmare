@@ -17,6 +17,10 @@ class Maze:
                 elif i%7==6 or j%7==6 and i not in range(6,13):
                     line.append(factory.makeObstacleTile(i,j))
                 elif i==3 and j==16:
+                    line.append(factory.makeKeyTile(i,j))
+                elif i==4 and j==16:
+                    line.append(factory.makeHeartTile(i,j))
+                elif i==5 and j==16:
                     line.append(factory.makeClosedHoleTile(i,j))
                 elif i==17 and (j in (4,5,14,15)) or (i,j) ==(18,4):
                     line.append(factory.makeObstacleTile(i,j))
@@ -84,6 +88,14 @@ class Maze:
     def paintTileDecorator(self, image, x, y):
         real_pos = self.getRealGround(x, y)
         self.game.paint(image, real_pos)
+
+    def paintKeyDecorator(self, image, x, y):
+        real_pos = self.getRealObstacle(x, y)
+        self.game.paint(image, (real_pos[0] + 10,real_pos[1]))
+
+    def paintHeartDecorator(self, image, x, y):
+        real_pos = self.getRealGround(x, y)
+        self.game.paint(image, (real_pos[0] + 10,real_pos[1]))
 
     def paintFront(self):
         self.game.paintFront()

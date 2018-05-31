@@ -11,15 +11,18 @@ class Game:
         self.maze = factory.makeMaze(self)
         self.character = factory.makeCharacter(self)
         self.display = pygame.display.set_mode((1000, 840))
+        self.display.fill((255, 255, 255))
+        pygame.display.set_caption('Vegeta\'s Nightmare')
         self.fpsClock = pygame.time.Clock()
         self.locked = False
         self.colissionManager = factory.makeColissionManager(self)
+        self.banner = pygame.image.load('images/banner.png')
 
     def run(self):
         pygame.init()
         while True:
             self.maze.paintAll()
-
+            #self.display.blit(self.banner, (1000, 0))
             if (not self.locked):
                 self.moveBalls()
                 self.moveEnemies()
@@ -64,7 +67,7 @@ class Game:
             self.fpsClock.tick(30)
 
     def paint(self, image, position):
-        self.display.blit(image, (position[0], position[1] + 10))
+        self.display.blit(image, (position[0], position[1] + 15))
 
     def canMoveUp(self, new_pos):
         return self.maze.canMoveUp(new_pos)
