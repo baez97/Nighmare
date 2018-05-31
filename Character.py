@@ -21,7 +21,7 @@ class MovableObject(object):
         
 class Character(MovableObject):
     def __init__(self, game, dic, dic_images_ss, dic_powerUp, factory):
-        super(Character, self).__init__(game, dic, (500,500))
+        super(Character, self).__init__(game, dic, (80,600))
         self.dics = {'normal':dic, 'supersaiyan':dic_images_ss, 'powerup': dic_powerUp}
         self.superStateFly = factory.makeSuperStateFlyweight(self, self.dics)
         self.state = self.superStateFly.getNormal()
@@ -182,5 +182,9 @@ class Character(MovableObject):
     
     def unlock(self):
         self.game.unlock()
+
+    def interact(self):
+        currentCell = self.game.getCell(self.pos)
+        currentCell.interact(self)
 
     

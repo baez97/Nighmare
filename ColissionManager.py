@@ -22,7 +22,7 @@ class ColissionManager:
         char_upper_limit = char_pos[1]
         char_lower_limit = char_pos[1] + self.game.getCharacterHeight()
 
-        if(right_limit > char_left_limit and right_limit - 11 < char_left_limit):
+        if(right_limit > char_left_limit and right_limit - self.game.getCharacterWidth() < char_left_limit):
             if(upper_limit < char_lower_limit and lower_limit > char_upper_limit):
                 self.charColission(ball)
     
@@ -33,7 +33,7 @@ class ColissionManager:
             enemy_upper_limit = enemy_pos[1]
             enemy_lower_limit = enemy_pos[1] + enemy.getHeight()
             
-            if(right_limit > enemy_left_limit and right_limit - 11 < enemy_left_limit):
+            if(right_limit > enemy_left_limit and right_limit - enemy.getWidth() < enemy_left_limit):
                 if(upper_limit < enemy_lower_limit and lower_limit > enemy_upper_limit):
                     self.enemyColission(ball, enemy)
 
@@ -55,7 +55,7 @@ class ColissionManager:
         char_upper_limit = char_pos[1]
         char_lower_limit = char_pos[1] + self.game.getCharacterHeight()
 
-        if(left_limit < char_right_limit and left_limit + 11 > char_right_limit):
+        if(left_limit < char_right_limit and left_limit + self.game.getCharacterWidth() > char_right_limit):
             if(upper_limit < char_lower_limit and lower_limit > char_upper_limit):
                 self.charColission(ball)
 
@@ -66,7 +66,7 @@ class ColissionManager:
             enemy_upper_limit = enemy_pos[1]
             enemy_lower_limit = enemy_pos[1] + enemy.getHeight()
 
-            if(left_limit < enemy_right_limit and left_limit + 11 > enemy_right_limit):
+            if(left_limit < enemy_right_limit and left_limit + enemy.getWidth()> enemy_right_limit):
                 if(upper_limit < enemy_lower_limit and lower_limit > enemy_upper_limit):
                     self.enemyColission(ball, enemy)
 

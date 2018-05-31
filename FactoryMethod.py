@@ -6,6 +6,8 @@ from Maze import *
 from Ball import *
 from Enemy import *
 from ColissionManager import *
+from TileDecorator import *
+from TileState import *
 import pygame
 from pygame import *
 
@@ -29,6 +31,12 @@ class FactoryMethod:
         self.dic_left_enemy =  (pygame.image.load('images/cell/l_1.png'),
                                 pygame.image.load('images/cell/l_2.png'),
                                 pygame.image.load('images/cell/l_3.png'))
+
+        self.dic_tiles_img = {'closed': pygame.image.load('images/HoleTile_locked.png'),
+                          'opened': pygame.image.load('images/HoleTile.png')}
+
+        self.dic_tiles_status = {'closed': self.makeHoleClosed(),
+                                 'opened': self.makeHoleOpened()}
 
     def makeCharacter(self, game):
         dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
@@ -111,6 +119,14 @@ class FactoryMethod:
     def makeWallTile(self, x, y):
         return WallTile(x, y)
 
+    def makeClosedHoleTile(self, x, y):
+        component = self.makeGroundTile(x, y)
+        return HoleDecorator(x, y, component, 'closed', self.dic_tiles_status)
+
+    def makeOpenedHoleTile(self, x, y):
+        component = self.makeGroundTile(x, y)
+        return HoleDecorator(x, y, component, 'closed', self.dic_tiles_status)
+
     def makeBall(self, game, direction, pos):
         return Ball(game, self.ball_dic, self.state_dic, direction, pos, game.getColissionManager())
 
@@ -131,4 +147,12 @@ class FactoryMethod:
 
     def makeColissionManager(self, game):
         return ColissionManager(game)
+
+    def makeHoleClosed(self):
+        return HoleClosed(self.dic_tiles_img['closed'])
+
+    def makeHoleOpened(self):
+        return HoleOpened(self.dic_tiles_img['opened'])
+
+    
         

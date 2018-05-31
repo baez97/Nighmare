@@ -279,7 +279,7 @@ class BallMovingLeft():
         ball.moveLeft()
     
     def getNextLimit(self, ball):
-        return (ball.pos[0] + ball.getWidth(), ball.pos[1], ball.pos[1] + ball.getHeight())
+        return (ball.pos[0], ball.pos[1], ball.pos[1] + ball.getHeight())
 
 class BallFading():
     def move(self, ball):

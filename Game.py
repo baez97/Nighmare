@@ -45,7 +45,7 @@ class Game:
                     if event.key == K_a:
                         self.character.changeAttackLeft()
                     if event.key == K_e:
-                        self.character.changePoweringUp()
+                        self.character.interact()
                     if event.key == K_q:
                         self.character.changeNormal()
 
@@ -103,6 +103,9 @@ class Game:
     def unlock(self):
         self.locked = False
 
+    def isLocked(self):
+        return self.locked
+
     def deleteBall(self, ball):
         self.maze.deleteBall(ball)
 
@@ -129,10 +132,11 @@ class Game:
 
     def getEnemies(self):
         return self.maze.getEnemies()
+        
+    def getCell(self, pos):
+        ground_x = pos[0] + self.getCharacterWidth()/2
+        ground_y = pos[1] + self.getCharacterHeight() - 30
+        return self.maze.getCell(ground_x, ground_y)
 fm = FactoryMethod()
 game = Game(fm)
-game.addEnemy(fm.makeRightEnemy(game, (150, 102), 0))
-game.addEnemy(fm.makeRightEnemy(game, (150, 370), 10))
-game.addEnemy(fm.makeRightEnemy(game, (150, 623), 0))
-game.addEnemy(fm.makeLeftEnemy(game, (800, 500), 0))
 game.run()

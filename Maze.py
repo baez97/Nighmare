@@ -9,16 +9,30 @@ class Maze:
         self.objects = []
         self.balls = []
         self.enemies = []
+        self.enemiesFort = []
         for i in range(0,20):
             for j in range(0,20):
                 if (j in (0, 19) or i in (0, 19)):
                     line.append(factory.makeWallTile(i, j))
                 elif i%7==6 or j%7==6 and i not in range(6,13):
                     line.append(factory.makeObstacleTile(i,j))
+                elif i==3 and j==16:
+                    line.append(factory.makeClosedHoleTile(i,j))
+                elif i==17 and (j in (4,5,14,15)) or (i,j) ==(18,4):
+                    line.append(factory.makeObstacleTile(i,j))
+                elif (i,j) == (18,15):
+                    fortObstacle = factory.makeObstacleTile(i,j)
+                    line.append(fortObstacle)
+                    self.enemiesFort.append(fortObstacle)
                 else:
                     line.append(factory.makeGroundTile(i,j))
             self.objects.append(line)
             line = []
+        self.enemiesFort.append(self.objects[18][6])
+        self.addEnemy(factory.makeLeftEnemy(game, (895, 170), 0))
+        self.addEnemy(factory.makeRightEnemy(game, (50, 350), 10))
+        self.addEnemy(factory.makeRightEnemy(game, (70, 390), 15))
+        self.addEnemy(factory.makeLeftEnemy(game, (895, 530), 0))
 
         self.ground_img   = pygame.image.load('images/GroundTile.png')
         self.obstacle_img = pygame.image.load('images/GrassTile.png')
@@ -44,12 +58,16 @@ class Maze:
         self.game.paintCharacter() 
 
     def paintAll(self):
+        #if not (self.game.isAttackingLeft() or self.game.isPoweringUp()): 
+        
         self.paintTiles()
+        self.paintEnemies()
+        self.repaintEnemiesFort()
         self.paintCharacter()
-        if not (self.game.isAttackingLeft() or self.game.isPoweringUp()): 
+        if self.game.isLocked():
             self.paintFront()
         self.paintBalls()
-        self.paintEnemies()
+        
     
     def paintGroundTile(self, x, y):
         real_pos = self.getRealGround(x,y)
@@ -63,6 +81,10 @@ class Maze:
         real_pos = self.getRealWall(x, y)
         self.game.paint(self.wall_img, real_pos)
 
+    def paintTileDecorator(self, image, x, y):
+        real_pos = self.getRealGround(x, y)
+        self.game.paint(image, real_pos)
+
     def paintFront(self):
         self.game.paintFront()
 
@@ -73,6 +95,10 @@ class Maze:
     def paintEnemies(self):
         for enemy in self.enemies:
             enemy.paint()
+
+    def repaintEnemiesFort(self):
+        for tile in self.enemiesFort:
+            tile.paint(self)
 
     def addBall(self, ball):
         self.balls.append(ball)
@@ -163,5 +189,7 @@ class Maze:
     def getEnemies(self):
         return self.enemies
 
+    def getCell(self, x, y):
+        return self.objects[x/50][y/40]
 
 
