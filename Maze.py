@@ -197,21 +197,20 @@ class TopMaze(Maze):
                     line.append(factory.makeWallTile(i, j))
                 elif i%7==6 or j%7==6 and i not in range(6,13):
                     line.append(factory.makeObstacleTile(i,j))
-                elif i==3 and j==16:
-                    line.append(factory.makeGoldMedalTile(i,j))
-                    #line.append(factory.makeKeyTile(i,j))
-                elif i==4 and j==16:
-                    line.append(factory.makeRedMedalTile(i,j))
-                elif i==5 and j==16:
-                    line.append(factory.makeBlueMedalTile(i,j))
-                elif i==2 and j==16:
-                    line.append(factory.makeOpenedHoleTile(i,j, self, 'underground'))
                 elif i==17 and (j in (4,5,14,15)) or (i,j) ==(18,4):
                     line.append(factory.makeObstacleTile(i,j))
                 elif (i,j) == (18,15):
                     fortObstacle = factory.makeObstacleTile(i,j)
                     line.append(fortObstacle)
                     self.enemiesFort.append(fortObstacle)
+                elif (i,j) in ((2,2), (9,2)):
+                    line.append(factory.makeKeyTile(i,j))
+                elif (i,j) in ((4,4), (18,3), (18,1), (2,15), (16, 15), (16, 17), (11,13)):
+                    line.append(factory.makeOpenedHoleTile(i, j, self, 'underground'))
+                elif (i,j) in ((4,17), (8,13), (17,18)):
+                    line.append(factory.makeClosedHoleTile(i, j, self, 'underground'))
+                elif (i,j) == (15,17):
+                    line.append(factory.makeRedMedalTile(i,j))
                 else:
                     line.append(factory.makeGroundTile(i,j))
             self.objects.append(line)
@@ -239,29 +238,28 @@ class UndergroundMaze(Maze):
             for j in range(0,20):
                 if (j in (0, 19) or i in (0, 19)):
                     line.append(factory.makeWallTile(i, j))
-                elif i%7==6 or j%7==6 and i not in range(6,13):
+                #painting stones
+                elif (i==5 and j <13) or (i==17 and j not in (1,17,18)) or (j == 16 and i not in (1,2,3,18)):
                     line.append(factory.makeObstacleTile(i,j))
-                elif i==3 and j==16:
+                elif (j==12 and i in range(6,11)) or (j==14 and i in range(7,17)):
+                    line.append(factory.makeObstacleTile(i,j))
+                elif (i==3 and j in range(14,19)) or (j==14 and i in (1,2,3)):
+                    line.append(factory.makeObstacleTile(i,j))
+                elif (j == 13 and i in (7,10) or (i,j) in ((18,2), (17,17), (17,18))):
+                    line.append(factory.makeObstacleTile(i,j))
+                elif (i,j) in ((4,4), (18,3), (18,1), (2,15), (16, 15), (16, 17), (11,13), (4,17), (8,13), (18,17)):
+                    line.append(factory.makeOpenedHoleTile(i, j, self, 'top'))
+                elif (i,j) == (9,13):
+                    line.append(factory.makeGoldMedalTile(i,j))
+                elif (i,j) == (17,1):
+                    line.append(factory.makeBlueMedalTile(i,j))
+                elif (i,j) == (1,17):
                     line.append(factory.makeKeyTile(i,j))
-                elif i==2 and j==16:
-                    line.append(factory.makeHeartTile(i,j))
-                elif i==5 and j==16:
-                    line.append(factory.makeOpenedHoleTile(i,j, self, 'top'))
-                elif i==17 and (j in (4,5,14,15)) or (i,j) ==(18,4):
-                    line.append(factory.makeObstacleTile(i,j))
-                elif (i,j) == (18,15):
-                    fortObstacle = factory.makeObstacleTile(i,j)
-                    line.append(fortObstacle)
-                    self.enemiesFort.append(fortObstacle)
                 else:
                     line.append(factory.makeGroundTile(i,j))
             self.objects.append(line)
             line = []
-        self.enemiesFort.append(self.objects[18][6])
-        self.addEnemy(factory.makeLeftEnemy(game, (895, 170), 0))
-        self.addEnemy(factory.makeRightEnemy(game, (50, 350), 10))
-        self.addEnemy(factory.makeRightEnemy(game, (70, 390), 15))
-        self.addEnemy(factory.makeLeftEnemy(game, (895, 530), 0))
+        
 
         self.ground_img   = pygame.image.load('images/WallTile.png')
         self.obstacle_img = pygame.image.load('images/RockTile.png')
