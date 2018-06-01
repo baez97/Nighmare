@@ -1,5 +1,8 @@
 # Vegeta's Nighmare
 Vegeta's Nightmare Game in Python using Pygame.
+<p align="center">
+  <img src="https://github.com/baez97/Nightmare/blob/master/images/Screenshot.png"/>
+</p>
 
 ## Objective of the game
 The object of the game is to kill al the enemies (cells) before dying, but they are enclosed so you can't attack them until you get the SuperSaiyan State that allows you to shoot energy balls.
@@ -17,11 +20,12 @@ The actions you can do are:
 | Get into a Hole | `E` |
 
 ## Obtaining the SuperSaiyan State
-In order to obtain the SuperSaiyan state you must collect the three fire medals (Red, Blue and Gold). Once you get the third one, Vegeta is automatically powering up. During the powering up animation, the display will turn darker and the game will be stopped until the animation is completed.
+In order to obtain the SuperSaiyan state you must collect the three fire medals (Red, Blue and Gold). Once you get the third one, Vegeta is automatically powering up. This state suppose that Vegeta moves faster and he is able to shoot Energy Balls.
 <p align="center">
   <img src="https://github.com/baez97/Nightmare/blob/master/images/vegetaPU/poweringUp.gif"/>
 </p>
 
+> During the powering up animation, the display will turn darker and the game will be stopped until the animation is completed.
 ## Energy Balls
 Energy balls are shot by the enemies and by vegeta (SuperSaiyan). They kill the enemies at one hit, and they cause a damage of one life in Vegeta. They are not stopped by the obstacles, only by the walls (borders of the game).
 <p align="center">
@@ -36,6 +40,12 @@ In order to get into the hole, you just put vegeta in the proper cell and press 
 </p>
 
 > If the hole was locked and you had a key, it will be unlocked and you will have to press `E`again in order to get into it.
+
+## Obstacles
+They avoid you to go through it, but they do not stop energy balls. In order to go to an area sepparated of yours by obstacles, you can use the holes.
+<p align="center">
+  <img src="https://github.com/baez97/Nightmare/blob/master/images/GrassTile.png"/>
+</p>
 
 ## Enemies
 The enemies are static and they shoot energy balls in a constant frecuency. If the character is hit by an energy ball, its life will be reduced in one heart.
