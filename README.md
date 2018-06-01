@@ -60,7 +60,7 @@ The enemies are static and they shoot energy balls in a constant frecuency. If t
 # Design patterns 
 | Pattern | Description |
 | --- | --- |
-| Decorator | The tiles of the maze are decorated with the items that are above them (key, hole, heart) |
+| Decorator | The tiles of the maze are decorated with the items that are above them (key, hole, heart) and they extend the functionality of the tile allowing vegecta to interact with it. |
 | State | The character, the enemies and the item's behaviour depends on its state (moving up, stopped, obtained) |
 | Bidimensional State | The character has the basic states (movingUp, stopped...) but also a super state (SuperSaiyan or normal). The combination of all states is implemented applying the state pattern again over the super state, so the character only has a super state, and the super state has a basic state, given the fact that the behaviour of the basic states depends also of the super state (the character moves faster if its super state is SuperSaiyan) |
 | Visitor | Some functionalities of the character depends on the items of the bag. For example, hasKey() goes through all the elements of the bag asking if it is a key, only the key returns True. |
