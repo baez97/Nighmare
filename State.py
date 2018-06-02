@@ -11,6 +11,8 @@ class State(object):
         return False
     def isLeft(self):
         return False
+    def isStopped(self):
+        return False
     def isAttackingLeft(self):
         return False
     def isAttackingRight(self):
@@ -18,7 +20,7 @@ class State(object):
 
 class MovingUp(State):
     def __init__(self, guy):
-        self.velocity = 10
+        #self.velocity = 10
         self.guy = guy
 
     def move(self):
@@ -35,7 +37,7 @@ class MovingUp(State):
 
 class MovingDown(State):
     def __init__(self, guy):
-        self.velocity = 10
+        #self.velocity = 10
         self.guy = guy
 
     def move(self):
@@ -52,7 +54,7 @@ class MovingDown(State):
 
 class MovingLeft(State):
     def __init__(self, guy):
-        self.velocity = 10
+        #self.velocity = 10
         self.guy = guy
 
     def move(self):
@@ -69,7 +71,7 @@ class MovingLeft(State):
 
 class MovingRight(State):
     def __init__(self, guy):
-        self.velocity = 10
+        #self.velocity = 10
         self.guy = guy
 
     def move(self):
@@ -86,7 +88,7 @@ class MovingRight(State):
 
 class Stopped(State):
     def __init__(self, guy):
-        self.velocity = 10
+        #self.velocity = 10
         self.guy = guy
     
     def move(self):
@@ -94,6 +96,9 @@ class Stopped(State):
 
     def getNextPos(self, velocity):
         return self.guy.pos
+
+    def isStopped(self):
+        return True
 
 class AttackingRight(State):
     def __init__(self, guy):
@@ -174,6 +179,13 @@ class SuperState(object):
         return self.state.isAttackingLeft()
     def isAttackingRight(self):
         return self.state.isAttackingRight()
+
+    def isNormal(self):
+        return False
+
+    def isSuperSaiyan(self):
+        return False
+
     def isPoweringUp(self):
         return False
 
@@ -207,6 +219,9 @@ class SuperState(object):
         else:
             self.changeStopped()
 
+    def getVelocity(self):
+        return self.velocity
+
 class SuperSaiyan(SuperState):
     def __init__(self, guy, dic, factory):
         super(SuperSaiyan, self).__init__(guy, dic, factory)
@@ -234,7 +249,10 @@ class SuperSaiyan(SuperState):
         else:
             self.guy.pos = (self.guy.pos[0] + 15, self.guy.pos[1])
             self.changeStopped()
-
+  
+    def isSuperSaiyan(self):
+        return True
+        
 class Normal(SuperState):
     def attackRight(self, counter):
         if counter < 3:
@@ -243,6 +261,9 @@ class Normal(SuperState):
             self.currentImg = self.right_images[2]
         else:
             self.changeStopped()
+
+    def isNormal(self):
+        return True
 
 class PoweringUp(SuperState):
     def __init__(self, guy, dic, factory):

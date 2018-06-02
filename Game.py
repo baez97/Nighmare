@@ -169,7 +169,10 @@ class Game:
     def paintGoldMedal(self):
         self.paint(self.factory.makeGoldImage(), (500, 755))
 
+    def getCharacter(self):
+        return self.character
 
-fm = FactoryMethod()
-game = Game(fm)
-game.run()
+
+# fm = FactoryMethod()
+# game = Game(fm)
+# game.run()

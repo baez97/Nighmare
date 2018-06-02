@@ -21,7 +21,7 @@ class MovableObject(object):
         
 class Character(MovableObject):
     def __init__(self, game, dic, dic_images_ss, dic_powerUp, factory):
-        super(Character, self).__init__(game, dic, (80,600))
+        super(Character, self).__init__(game, dic, (170,620))
         self.dics = {'normal':dic, 'supersaiyan':dic_images_ss, 'powerup': dic_powerUp}
         self.superStateFly = factory.makeSuperStateFlyweight(self, self.dics)
         self.state = self.superStateFly.getNormal()
@@ -213,4 +213,13 @@ class Character(MovableObject):
 
     def paintMedalImages(self):
         self.bag.paintMedalImages(self.game)
+
+    def getState(self):
+        return self.state
+
+    def getBasicState(self):
+        return self.state.getState()
+
+    def getVelocity(self):
+        return self.state.getVelocity()
     
