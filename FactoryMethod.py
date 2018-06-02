@@ -62,6 +62,9 @@ class FactoryMethod:
         self.dic_images_key = {'empty': pygame.image.load('images/items/key.png'),
                                'obtained': pygame.image.load('images/items/key.png')}
 
+        self.dead_image = pygame.image.load('images/Dead.png')
+        self.win_image = pygame.image.load('images/Win.png')
+
     def makeCharacter(self, game):
         dic_images = {'stopped':pygame.image.load('images/vegeta/stopped.png'),
                            'left':pygame.image.load('images/vegeta/left.png'), 'right':pygame.image.load('images/vegeta/right.png'),
@@ -261,6 +264,11 @@ class FactoryMethod:
     def makeGoldImage(self):
         return self.dic_tiles_img['gold_unobtained']
 
+    def getDeadImage(self):
+        return self.dead_image
+
+    def getWinImage(self):
+        return self.win_image
     
 
     

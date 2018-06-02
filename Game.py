@@ -19,15 +19,25 @@ class Game:
         self.locked = False
         self.colissionManager = factory.makeColissionManager(self)
         self.banner = pygame.image.load('images/banner.png')
+        self.won = False
+        self.dead = False
 
     def run(self):
         pygame.init()
         while True:
+            
+            
             self.maze.paintAll()
             #self.display.blit(self.banner, (1000, 0))
             if (not self.locked):
                 self.moveBalls()
                 self.moveEnemies()
+
+            elif self.dead:
+                self.paintDead()
+
+            elif self.won:
+                self.paintWin()
 
             self.character.move()
 
@@ -67,7 +77,7 @@ class Game:
 
             pygame.display.update()
             self.fpsClock.tick(30)
-
+        
     def paint(self, image, position):
         self.display.blit(image, (position[0], position[1] + 15))
 
@@ -172,7 +182,20 @@ class Game:
     def getCharacter(self):
         return self.character
 
+    def die(self):
+        self.lock()
+        self.dead = True
 
-# fm = FactoryMethod()
-# game = Game(fm)
-# game.run()
+    def win(self):
+        self.lock()
+        self.won = True
+
+    def paintDead(self):
+        self.paint(self.factory.getDeadImage(), (200,250))
+
+    def paintWin(self):
+        self.paint(self.factory.getWinImage(), (200,250))
+
+fm = FactoryMethod()
+game = Game(fm)
+game.run()

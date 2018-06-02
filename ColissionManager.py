@@ -77,3 +77,6 @@ class ColissionManager:
     def enemyColission(self, ball, enemy):
         self.game.maze.enemies.remove(enemy)
         ball.changeFading()
+        if len(self.game.maze.enemies) == 0:
+            self.game.win()
+        

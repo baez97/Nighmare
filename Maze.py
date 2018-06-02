@@ -136,7 +136,7 @@ class Maze:
         if cell_a[0] > 0:
             return self.getRealGround(cell_a[0], cell_a[1])[0]
 
-        cell_b = self.objects[x/50][(y+50)/40].isObstacle()
+        cell_b = self.objects[x/50][(y+40)/40].isObstacle()
         
         if cell_b[0] > 0:
             return self.getRealGround(cell_b[0], cell_b[1])[0]
@@ -163,7 +163,7 @@ class Maze:
         if cell_a[0] >= 0:
             return self.getRealGround(cell_a[0], cell_a[1])[0]
 
-        cell_b = self.objects[x/50][(y+50)/40].isObstacle()
+        cell_b = self.objects[x/50][(y+40)/40].isObstacle()
         
         if cell_b[0] >= 0:
             return self.getRealGround(cell_b[0], cell_b[1])[0]
@@ -207,7 +207,7 @@ class TopMaze(Maze):
                     line.append(factory.makeKeyTile(i,j))
                 elif (i,j) in ((4,4), (18,3), (18,1), (2,15), (16, 15), (16, 17), (11,13)):
                     line.append(factory.makeOpenedHoleTile(i, j, self, 'underground'))
-                elif (i,j) in ((4,17), (8,13), (17,18)):
+                elif (i,j) in ((4,17), (8,13), (18,17)):
                     line.append(factory.makeClosedHoleTile(i, j, self, 'underground'))
                 elif (i,j) == (15,17):
                     line.append(factory.makeRedMedalTile(i,j))

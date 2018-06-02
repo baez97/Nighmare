@@ -29,7 +29,7 @@ class Character(MovableObject):
         self.width = self.rect.right
         self.height = self.rect.bottom
         self.factory = factory
-        self.life = 5
+        self.life = 15
         self.bag = factory.makeBag(self)
 
     def moveUp(self):
@@ -159,7 +159,8 @@ class Character(MovableObject):
 
     def hurt(self, damage):
         self.life -= damage
-        print 'Character damaged!, current life ->', self.life
+        if self.life == 0:
+            self.game.die()
         
     def isAttackingLeft(self):
         return self.state.isAttackingLeft()

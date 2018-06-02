@@ -1,6 +1,6 @@
 class State(object):
     def __init__(self, guy):
-        self.velocity = 10
+        self.velocity = 15
         self.guy = guy
 
     def isUp(self):
