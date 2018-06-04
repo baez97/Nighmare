@@ -38,7 +38,7 @@ class FactoryMethod:
                               'key_obtained': pygame.image.load('images/null.png'),
                               'key_unobtained': pygame.image.load('images/items/key.png'),
                               'heart_obtained': pygame.image.load('images/null.png'),
-                              'heart_unobtained': pygame.image.load('images/heart/h_1.png'),
+                              'heart_unobtained': pygame.image.load('images/heart/h_decorator.png'),
                               'medal_obtained': pygame.image.load('images/null.png'),
                               'red_unobtained': pygame.image.load('images/items/RedMedal.png'),
                               'blue_unobtained': pygame.image.load('images/items/BlueMedal.png'),

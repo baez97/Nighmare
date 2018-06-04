@@ -12,7 +12,7 @@ class Game:
                       'underground':factory.makeUndergroundMaze(self)}
         self.maze = self.mazes['top']
         self.character = factory.makeCharacter(self)
-        self.display = pygame.display.set_mode((1000, 840))
+        self.display = pygame.display.set_mode((1000, 720))
         self.display.fill((255, 255, 255))
         pygame.display.set_caption('Vegeta\'s Nightmare')
         self.fpsClock = pygame.time.Clock()
@@ -25,7 +25,6 @@ class Game:
     def run(self):
         pygame.init()
         while True:
-            
             
             self.maze.paintAll()
             #self.display.blit(self.banner, (1000, 0))
@@ -196,6 +195,9 @@ class Game:
     def paintWin(self):
         self.paint(self.factory.getWinImage(), (200,250))
 
+    def killEnemy(self, enemy):
+        self.maze.killEnemy(enemy)
+        
 fm = FactoryMethod()
 game = Game(fm)
 game.run()

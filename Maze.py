@@ -61,7 +61,7 @@ class Maze:
 
     def paintMedalDecorator(self, image, x, y):
         real_pos = self.getRealGround(x, y)
-        self.game.paint(image, (real_pos[0] + 10, real_pos[1]))
+        self.game.paint(image, (real_pos[0] + 10, real_pos[1] - 10))
 
     def paintFront(self):
         self.game.paintFront()
@@ -182,6 +182,9 @@ class Maze:
     def goTo(self, maze):
         self.game.changeMazeTo(maze)
 
+    def killEnemy(self, enemy):
+        self.enemies.remove(enemy)
+
 
 class TopMaze(Maze):
     def __init__(self, game, factory):
@@ -193,33 +196,35 @@ class TopMaze(Maze):
         self.enemiesFort = []
         for i in range(0,20):
             for j in range(0,20):
-                if (j in (0, 19) or i in (0, 19)):
+                if (j in (0, 17) or i in (0, 19)):
                     line.append(factory.makeWallTile(i, j))
-                elif i%7==6 or j%7==6 and i not in range(6,13):
+                elif i in (6, 13) or ((j in (6, 11)) and i not in range(6,13)):
                     line.append(factory.makeObstacleTile(i,j))
-                elif i==17 and (j in (4,5,14,15)) or (i,j) ==(18,4):
+                elif i==17 and (j in (4,5,12,13)) or (i,j) ==(18,4):
                     line.append(factory.makeObstacleTile(i,j))
-                elif (i,j) == (18,15):
+                elif (i,j) == (18,13):
                     fortObstacle = factory.makeObstacleTile(i,j)
                     line.append(fortObstacle)
                     self.enemiesFort.append(fortObstacle)
                 elif (i,j) in ((2,2), (9,2)):
                     line.append(factory.makeKeyTile(i,j))
-                elif (i,j) in ((4,4), (18,3), (18,1), (2,15), (16, 15), (16, 17), (11,13)):
+                elif (i,j) in ((4,4), (18,3), (18,1), (2,13), (16, 13), (16, 15), (11,11)):
                     line.append(factory.makeOpenedHoleTile(i, j, self, 'underground'))
-                elif (i,j) in ((4,17), (8,13), (18,17)):
+                elif (i,j) in ((4,15), (8,11), (18,15)):
                     line.append(factory.makeClosedHoleTile(i, j, self, 'underground'))
-                elif (i,j) == (15,17):
+                elif (i,j) == (15,15):
                     line.append(factory.makeRedMedalTile(i,j))
+                elif j == 2 and i in (3,8):
+                    line.append(factory.makeHeartTile(i,j))
                 else:
                     line.append(factory.makeGroundTile(i,j))
             self.objects.append(line)
             line = []
         self.enemiesFort.append(self.objects[18][6])
         self.addEnemy(factory.makeLeftEnemy(game, (895, 170), 0))
-        self.addEnemy(factory.makeRightEnemy(game, (50, 350), 10))
-        self.addEnemy(factory.makeRightEnemy(game, (70, 390), 15))
-        self.addEnemy(factory.makeLeftEnemy(game, (895, 530), 0))
+        self.addEnemy(factory.makeRightEnemy(game, (50, 300), 10))
+        self.addEnemy(factory.makeRightEnemy(game, (70, 340), 15))
+        self.addEnemy(factory.makeLeftEnemy(game, (895, 450), 0))
 
         self.ground_img   = pygame.image.load('images/GroundTile.png')
         self.obstacle_img = pygame.image.load('images/GrassTile.png')
@@ -236,24 +241,24 @@ class UndergroundMaze(Maze):
         self.enemiesFort = []
         for i in range(0,20):
             for j in range(0,20):
-                if (j in (0, 19) or i in (0, 19)):
+                if (j in (0, 17) or i in (0, 19)):
                     line.append(factory.makeWallTile(i, j))
                 #painting stones
-                elif (i==5 and j <13) or (i==17 and j not in (1,17,18)) or (j == 16 and i not in (1,2,3,18)):
+                elif (i==5 and j <11) or (i==17 and j not in (1,15,17)) or (j == 14 and i not in (1,2,3,18)):
                     line.append(factory.makeObstacleTile(i,j))
-                elif (j==12 and i in range(6,11)) or (j==14 and i in range(7,17)):
+                elif (j==10 and i in range(6,11)) or (j==12 and i in range(7,17)):
                     line.append(factory.makeObstacleTile(i,j))
-                elif (i==3 and j in range(14,19)) or (j==14 and i in (1,2,3)):
+                elif (i==3 and j in range(12,17)) or (j==12 and i in (1,2,3)):
                     line.append(factory.makeObstacleTile(i,j))
-                elif (j == 13 and i in (7,10) or (i,j) in ((18,2), (17,17), (17,18))):
+                elif (j == 11 and i in (7,10) or (i,j) in ((18,2), (17,15), (17,16))):
                     line.append(factory.makeObstacleTile(i,j))
-                elif (i,j) in ((4,4), (18,3), (18,1), (2,15), (16, 15), (16, 17), (11,13), (4,17), (8,13), (18,17)):
+                elif (i,j) in ((4,4), (18,3), (18,1), (2,13), (16, 13), (16, 15), (11,11), (4,15), (8,11), (18,15)):
                     line.append(factory.makeOpenedHoleTile(i, j, self, 'top'))
-                elif (i,j) == (9,13):
+                elif (i,j) == (9,11):
                     line.append(factory.makeGoldMedalTile(i,j))
                 elif (i,j) == (17,1):
                     line.append(factory.makeBlueMedalTile(i,j))
-                elif (i,j) == (1,17):
+                elif (i,j) == (1,15):
                     line.append(factory.makeKeyTile(i,j))
                 else:
                     line.append(factory.makeGroundTile(i,j))
@@ -274,3 +279,5 @@ class UndergroundMaze(Maze):
     def paintKeyDecorator(self, image, x, y):
         real_pos = self.getRealObstacle(x, y)
         self.game.paint(image, (real_pos[0] + 10, real_pos[1] - 20))
+
+    
