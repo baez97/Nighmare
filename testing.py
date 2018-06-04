@@ -8,7 +8,7 @@ class Nightmare_test:
         self.game = Game(self.fm)
         self.character = self.game.getCharacter()
         self.counter = 0
-        self.total = 13
+        self.total = 12
 
     def run(self):
         self.counter += self.test_locked()
