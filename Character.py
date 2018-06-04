@@ -24,7 +24,7 @@ class Character(MovableObject):
         super(Character, self).__init__(game, dic, (170,620))
         self.dics = {'normal':dic, 'supersaiyan':dic_images_ss, 'powerup': dic_powerUp}
         self.superStateFly = factory.makeSuperStateFlyweight(self, self.dics)
-        self.state = self.superStateFly.getSuperSaiyan()
+        self.state = self.superStateFly.getNormal()
         self.rect = self.state.getImg().get_rect()
         self.width = self.rect.right
         self.height = self.rect.bottom
