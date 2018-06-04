@@ -82,13 +82,13 @@ class Game:
 
     def paintKey(self):
         if self.character.hasKey():
-            self.paint(self.factory.makeKeyImage(), (310, 755))
+            self.paint(self.factory.makeKeyImage(), (10, 630))
 
     def paintLife(self):
         num_lives = self.character.getLife()
         for i in range(0,num_lives):
             x = 50 + 30*i
-            y = 780
+            y = 670
             self.paint(self.factory.makeHeartImage(), (x,y))
 
     def canMoveUp(self, new_pos):
@@ -170,13 +170,13 @@ class Game:
         self.character.paintMedalImages()
 
     def paintBlueMedal(self):
-        self.paint(self.factory.makeBlueImage(), (400, 755))
+        self.paint(self.factory.makeBlueImage(), (10, 500))
 
     def paintRedMedal(self):
-        self.paint(self.factory.makeRedImage(), (450, 755))
+        self.paint(self.factory.makeRedImage(), (10, 550))
 
     def paintGoldMedal(self):
-        self.paint(self.factory.makeGoldImage(), (500, 755))
+        self.paint(self.factory.makeGoldImage(), (10, 450))
 
     def getCharacter(self):
         return self.character
@@ -190,10 +190,10 @@ class Game:
         self.won = True
 
     def paintDead(self):
-        self.paint(self.factory.getDeadImage(), (200,250))
+        self.paint(self.factory.getDeadImage(), (200,200))
 
     def paintWin(self):
-        self.paint(self.factory.getWinImage(), (200,250))
+        self.paint(self.factory.getWinImage(), (200,200))
 
     def killEnemy(self, enemy):
         self.maze.killEnemy(enemy)
