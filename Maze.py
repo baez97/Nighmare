@@ -185,7 +185,9 @@ class Maze:
     def killEnemy(self, enemy):
         self.enemies.remove(enemy)
 
-
+    def getObjects(self):
+        return self.objects
+        
 class TopMaze(Maze):
     def __init__(self, game, factory):
         self.game = game
@@ -195,7 +197,7 @@ class TopMaze(Maze):
         self.enemies = []
         self.enemiesFort = []
         for i in range(0,20):
-            for j in range(0,20):
+            for j in range(0,18):
                 if (j in (0, 17) or i in (0, 19)):
                     line.append(factory.makeWallTile(i, j))
                 elif i in (6, 13) or ((j in (6, 11)) and i not in range(6,13)):
@@ -240,7 +242,7 @@ class UndergroundMaze(Maze):
         self.enemies = []
         self.enemiesFort = []
         for i in range(0,20):
-            for j in range(0,20):
+            for j in range(0,18):
                 if (j in (0, 17) or i in (0, 19)):
                     line.append(factory.makeWallTile(i, j))
                 #painting stones
@@ -279,5 +281,7 @@ class UndergroundMaze(Maze):
     def paintKeyDecorator(self, image, x, y):
         real_pos = self.getRealObstacle(x, y)
         self.game.paint(image, (real_pos[0] + 10, real_pos[1] - 20))
+
+    
 
     

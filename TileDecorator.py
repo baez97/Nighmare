@@ -28,6 +28,15 @@ class HoleDecorator(TileDecorator):
     def enter(self):
         self.maze_1.goTo(self.maze_2)
 
+    def isHoleTile(self):
+        return True
+
+    def isOpened(self):
+        return self.state.isOpened()
+
+    def isClosed(self):
+        return self.state.isClosed()
+
 class KeyDecorator(TileDecorator):
     def paint(self, maze):
         self.component.paint(maze)
@@ -37,6 +46,9 @@ class KeyDecorator(TileDecorator):
     def obtain(self):
         self.state = self.state_dic['key_obtained']
 
+    def isKeyTile(self):
+        return True
+
 class HeartDecorator(TileDecorator):
     def paint(self, maze):
         self.component.paint(maze)
@@ -45,6 +57,9 @@ class HeartDecorator(TileDecorator):
 
     def obtain(self):
         self.state = self.state_dic['heart_obtained']
+
+    def isHeartTile(self):
+        return True
 
 class MedalDecorator(TileDecorator):
     def paint(self, maze):
@@ -56,13 +71,22 @@ class RedMedalDecorator(MedalDecorator):
     def obtain(self):
         self.state = self.state_dic['obtained']
 
+    def isRedMedalTile(self):
+        return True
+
 class BlueMedalDecorator(MedalDecorator):
     def obtain(self):
         self.state = self.state_dic['obtained']
 
+    def isBlueMedalTile(self):
+        return True
+
 class GoldMedalDecorator(MedalDecorator):
     def obtain(self):
         self.state = self.state_dic['obtained']
+
+    def isGoldMedalTile(self):
+        return True
 
 
 

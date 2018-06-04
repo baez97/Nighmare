@@ -7,6 +7,12 @@ class TileState:
     def getImage(self):
         return self.image
 
+    def isClosed(self):
+        return False
+
+    def isOpened(self):
+        return False
+
 class HoleClosed(TileState):
     def interact(self, tile, character):
         if character.useKey():
@@ -14,10 +20,16 @@ class HoleClosed(TileState):
         else:
             print "The hole is locked! you need a key"
 
+    def isClosed(self):
+        return True
+
+
 class HoleOpened(TileState):
     def interact(self, tile, character):
         tile.enter()
 
+    def isOpened(self):
+        return True
 
 class KeyObtained(TileState):
     def interact(self, tile, character):

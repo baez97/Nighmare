@@ -186,8 +186,8 @@ class Game:
         self.dead = True
 
     def win(self):
-        self.lock()
         self.won = True
+        self.lock()
 
     def paintDead(self):
         self.paint(self.factory.getDeadImage(), (200,200))
@@ -197,7 +197,12 @@ class Game:
 
     def killEnemy(self, enemy):
         self.maze.killEnemy(enemy)
+        if len(self.maze.getEnemies()) == 0:
+            self.win()
+
+    def getMaze(self):
+        return self.maze
         
 fm = FactoryMethod()
 game = Game(fm)
-game.run()
+#game.run()
