@@ -205,4 +205,4 @@ class Game:
         
 fm = FactoryMethod()
 game = Game(fm)
-game.run()
+#game.run()
