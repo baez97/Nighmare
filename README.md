@@ -5,7 +5,7 @@ Vegeta's Nightmare Game in Python using Pygame.
 </p>
 
 ## Objective of the game
-The object of the game is to kill al the enemies (cells) before dying, but they are enclosed so you can't attack them until you get the SuperSaiyan State that allows you to shoot energy balls.
+The object of the game is to kill all the enemies (cells) before dying, but they are enclosed so you can't attack them until you get the SuperSaiyan State that allows you to shoot energy balls.
 
 ## Controls
 The actions you can do are:
